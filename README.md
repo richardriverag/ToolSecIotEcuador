@@ -9,3 +9,8 @@ Flask run
 https://flask.palletsprojects.com/en/2.0.x/server/
 
 pip install -r requirements.txt
+
+
+https://flask-login.readthedocs.io/en/latest/
+
+

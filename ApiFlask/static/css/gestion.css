@@ -1,0 +1,514 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  :root{
+    /*Primary*/
+  --color-primary-100: #DBF6F7;
+  --color-primary-200: #B9E9EF;
+  --color-primary-300: #8AC4D0;
+  --color-primary-400: #5D91A2;
+  --color-primary-500: #2C5364;
+  --color-primary-600: #204256;
+  --color-primary-700: #163248;
+  --color-primary-800: #0E233A;
+  --color-primary-900: #081930;
+    /*Success*/
+  --color-success-100: #E2FAD5;
+  --color-success-200: #C0F5AE;
+  --color-success-300: #91E27F;
+  --color-success-400: #63C55A;
+  --color-success-500: #2CA02C;
+  --color-success-600: #208929;
+  --color-success-700: #167326;
+  --color-success-800: #0E5C22;
+  --color-success-900: #084C20;
+    /*Info*/
+  --color-info-100: #C9FBF5;
+  --color-info-200: #94F7F3;
+  --color-info-300: #5DE3E8;
+  --color-info-400: #34C0D2;
+  --color-info-500: #0093B5;
+  --color-info-600: #00729B;
+  --color-info-700: #005682;
+  --color-info-800: #003D68;
+  --color-info-900: #002C56;
+    /*Warning*/
+  --color-warning-100: #FFF5CE;
+  --color-warning-200: #FFE99E;
+  --color-warning-300: #FFDA6D;
+  --color-warning-400: #FFCB49;
+  --color-warning-500: #FFB20D;
+  --color-warning-600: #DB9109;
+  --color-warning-700: #B77306;
+  --color-warning-800: #935804;
+  --color-warning-900: #7A4402;
+    /*Danger*/
+  --color-danger-100: #FBE3CB;
+  --color-danger-200: #F8C299;
+  --color-danger-300: #EC9465;
+  --color-danger-400: #D9683E;
+  --color-danger-500: #c12e09;
+  --color-danger-600: #A51A06;
+  --color-danger-700: #8A0B04;
+  --color-danger-800: #6F0205;
+  --color-danger-900: #5C010A;
+  }
+  
+  body {
+    font-family: 'open sans';
+    background: linear-gradient(rgba(47, 23, 15, 0.76), rgba(47, 23, 15, 0.685)), url("../img/iot.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    object-fit: cover;
+  }
+  
+  .contenedor {
+    padding: 60px 0;
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    overflow: hidden;
+  }
+  
+  .titulo {
+    color: var(--color-primary-100);
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 60px;
+    text-transform: uppercase;
+  }
+  
+  
+  header {
+    width: 100%;
+    background-attachment: fixed;
+    position: relative;
+  }
+  
+  nav{
+      text-align: center;
+      background-color: var(--color-info-700);
+      color: var(--color-info-100);
+  }
+  
+  nav li{
+    margin: 0 5px 0 5px;
+  
+    
+  }
+  
+  nav > a{
+    color:#fff;
+    font-weight: 300;
+    text-decoration: none;
+    margin-right: 10px;
+    
+  }
+  
+  nav > a:hover{
+    text-decoration: underline;
+    
+  }
+  
+  header .textos-header{
+    display: flex;
+    height: 430px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .textos-header h1{
+    font-size: 50px;
+    color:var(--color-info-100);
+  }
+  
+  .textos-header h2{
+    font-size: 30px;
+    font-weight: 300;
+    color:var(--color-info-100);
+  }
+  
+  .wave{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  /*main*/
+  main .sobre-iot{
+    padding: 30px 0 60px 0;
+    
+  }
+  .contenedor-sobre-iot{
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .imagen-about-iot{
+    width: 48%;
+  }
+  
+  .sobre-iot .contenido-textos{
+    width: 50%;
+  }
+  
+  .contenido-textos h3{
+    margin: 0 0 15px 0;
+    text-align: center;
+    color:var(--color-info-200);
+   
+  }
+  
+  
+  .contenido-textos p{
+    padding: 0px 0px 30px 15px;
+    font-weight: 300;
+    text-align: justify;
+    color: white;
+  }
+  
+  /* Galeria */
+  
+  
+  .portafolio{
+    background-color: var(--color-info-700);
+  }
+  
+  .galeria-port{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    
+  }
+  
+  .imagen-port{
+    width: 24%;
+    height: 200px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, .5);
+  }
+  
+  .imagen-port > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .hover-galeria{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    transform: scale(0);
+    background: var(--color-info-500);
+    transition: transform .5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  
+  }
+  
+  .hover-galeria img{
+    width: 50px;
+  }
+  
+  .hover-galeria p{
+    color: var(--color-warning-500);
+    font-size: 20px;
+    text-align: center;
+    text-transform: capitalize;
+  }
+  
+  .imagen-port:hover .hover-galeria{
+    transform: scale(1);
+  }
+  
+  /* Our - team */
+  
+  .cards{
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .cards .card{
+    background: var(--color-info-700);
+    display: flex;
+    width: 46%;
+    height: 200px;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 5px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
+  }
+  
+  .cards .card img{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    display: block;
+  }
+  
+  .cards .card > .contenido-texto-card{
+    width: 100%;
+    text-align: center;
+    color: #fff;
+  }
+  
+  .cards .card > .contenido-texto-card p{
+    font-weight: 300;
+    padding-top: 5px;
+  }
+  
+  /*  Our servicios */
+  
+  .about-services{
+    background: var(--color-info-700);
+    padding-bottom: 30px;
+  }
+  
+  .servicio-cont{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .servicio-ind{
+    width: 28%;
+    text-align: center;
+  }
+  
+  .servicio-ind img{
+    width: 90%;
+  }
+  
+  .servicio-ind h3{
+    margin: 10px 0;
+    
+  }
+  
+  .servicio-ind p{
+    font-weight: 300;
+    text-align: justify;
+  }
+  
+  /*footer*/
+  
+  footer{
+    background:rgba(0, 0, 0, .5);
+    padding: 60px 0 30px 0;
+    margin: auto;
+    overflow: hidden;
+  }
+  
+  .contenedor-footer{
+    display: flex;
+    width: 90%;
+    justify-content: space-evenly;
+    margin: auto;
+    padding-bottom: 50px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .content-foo{
+    text-align: center;
+    
+  }
+  
+  .content-foo h4{
+    color: #fff;
+    border-bottom: 3px solid var(--color-info-500);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .content-foo p{
+    color: #ccc;
+  }
+  
+  .titulo-final{
+    text-align: center;
+    font-size: 24px;
+    margin: 20px 0 0 0;
+    color: #9e9797;
+  }
+  
+  /*register */
+  
+  .post-form{
+    color: white;
+    background-color: var(--color-primary-700);
+    background-size: cover;
+    width: auto;
+    height: 500px;
+    
+  }
+  
+   .container_register{
+    padding-top: 20px;
+    width: 50%;
+    height: 300px;
+    margin: 0 auto;
+    flex-direction: column;
+  }
+  
+  .form-group{
+    width: auto;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  
+  @media screen and (max-width:950px){
+      header{
+          background-position: center;
+      }
+  
+      .contenedor-sobre-nosotros{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+  
+      .sobre-nosotros .contenido-textos{
+          width: 90%;
+      }
+  
+      .imagen-about-us{
+          width: 90%;
+      }
+  
+      /* Galeria */
+  
+      .imagen-port{
+          width: 44%;
+      }
+  
+      /* Clientes */
+  
+      .cards{
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+      }
+  
+      .cards .card{
+          width: 90%;
+      }
+  
+      .cards .card:first-child{
+          margin-bottom: 30px;
+      }
+  
+      /* servicios */
+  
+      .servicio-cont{
+          justify-content: center;
+          flex-direction: column;
+      }
+  
+      .servicio-ind{
+          width: 100%;
+          text-align: center;
+      }
+  
+      .servicio-ind:nth-child(1), .servicio-ind:nth-child(2){
+          margin-bottom: 60px;
+      }
+  
+      .servicio-ind img{
+          width: 90%;
+      }
+  }
+  
+  @media screen and (max-width:700px){
+      nav{
+          text-align: center;
+          padding: 30px 0 0 0;
+      }
+  
+      nav > a{
+          margin-right: 5px;
+      }
+  
+      .textos-header h1{
+          font-size: 35px;
+        
+      }
+  
+      .textos-header h2{
+          font-size: 20px;
+      }
+  
+      /* ABOUT US */
+    
+  
+      .imagen-about-iot{
+          margin-bottom: 60px;
+          width: 0%;
+      }
+  
+      .sobre-iot .contenido-textos{
+          width: 95%;
+      }
+  
+      /* Galeria */
+  
+      .imagen-port{
+          width: 95%;
+      }
+  
+      /* Clients */
+  
+      .cards .card{
+          height: 450px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+  
+      .cards .card img{
+          width: 90px;
+          height: 90px;
+      }
+  
+      /* Footer */
+  
+      .contenedor-footer{
+          flex-direction: column;
+          border: none;
+      }
+  
+      .content-foo{
+          margin-bottom: 20px;
+          text-align: center;
+      }
+  
+      .content-foo h4{
+          border: none;
+      }
+  
+      .content-foo p{
+          color: var(--color-primary-300);
+          border-bottom: 1px solid var(--color-primary-500);
+          padding-bottom: 20px;
+      }
+  
+      .titulo-final{
+          font-size: 20px;
+      }
+  }

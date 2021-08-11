@@ -1,0 +1,54 @@
+{% extends "Access/base.html" %}{% block content %}
+
+		<div class="col-sm-6">
+			<div class="card bg-dark mb-3" style="width: auto;">
+            <img src="/static/img/iot.jpg" alt="Avatar" style="width:50%">
+            <div class="container_card_ipv4">
+               
+              {% for item in items %}
+              <h4><b>Dirección: {{item.Direccion}}</b></h4>
+              <ul class="list-group">
+
+                <li class="list-group-item">Fecha: {{item.Fecha}} </li>
+                <li class="list-group-item">Pais: {{item.Locatizacion.country_name}}</li>
+                <li class="list-group-item">Ciudad: {{item.Locatizacion.city}}</li>
+                <li class="list-group-item">Codigo: {{item.Locatizacion.region_code}}</li>
+                <li class="list-group-item">Latitud: {{item.Locatizacion.latitude}}</li>
+                <li class="list-group-item">Latitud: {{item.Locatizacion.longitude}}</li>
+				<li class="list-group-item">********************************</li>
+				<li class="list-group-item">Dominio: {{item.Dominio}}</li>
+				<li class="list-group-item">Dns: {{item.Dns}}</li>
+				<li class="list-group-item">********************************</li>
+				<li class="list-group-item">Range Ipv4: {{item.Whois.asn_cidr}}</li>
+				<li class="list-group-item">Descripción: {{item.Whois.asn_description}}</li>
+              </ul>
+            </div>
+          </div>
+		</div>
+		  
+		  <div class="row">
+			{% for x in item.puerto %}
+		  <div class="col-sm-4">
+		  <div class="card bg-dark mb-3" style="width: auto;">
+			<img src="/static/img/iot.jpg" class="card-img-top">
+			<div class="card-body bg-dark mb-3">
+				
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Puerto: {{x.Puerto}}</li>
+					{% if x.Banner == ""%}
+					<li class="list-group-item"><p>Banner:</p> No hay información</li>
+					{% else %}
+					<li class="list-group-item"><p>Banner:</p> {{x.Banner}}</li>
+					{% endif %}
+					<li class="list-group-item">Vulnerabilidades</li>
+				  </ul>
+				
+			</div>
+		  </div>
+		</div>
+		{% endfor %}
+	</div>
+		  
+		  {% endfor %}
+
+		{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "Access/base.html" %}
+{% block content %}
+
+<h1>Configuración de usuario</h1>
+
+
+<form action="" method="post">
+    <div class="form-group">
+        <label for="username">nickname</label>
+        <input name="username" class="form-control" id="inputUsername" aria-describedby="emailHelp" placeholder="Enter full nick name">
+        <small id="username" class="form-text text-muted">Please enter your Nick name</small>
+    </div>
+
+    <div class="form-group">
+        <label for="first_name">First_name:</label>
+        <input name="first_name" class="form-control" id="inputFirst_name" aria-describedby="emailHelp" placeholder="Enter full first name">
+        <small id="first_name" class="form-text text-muted">Please enter your Last name)</small>
+    </div>
+
+    <div class="form-group">
+        <label for="last_name">Last_name:</label>
+        <input name="last_name" class="form-control" id="inputLast_name" aria-describedby="emailHelp" placeholder="Enter full last name">
+        <small id="last_name" class="form-text text-muted">Please enter your First name </small>
+    </div>
+
+    <div class="form-group">
+            <label for="InputEmail">Email address</label>
+            <input name="email" class="form-control" id="InputEmail"  placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+
+    <div class="form-group">
+        <label for="InputPassword">Password</label>
+        <input type="password" name="password1" class="form-control" id="InputPassword" placeholder="Password">
+    </div>
+
+        <div class="form-group">
+        <label for="InputPassword2">Repeat Password</label>
+        <input type="password" name="password2" class="form-control" id="InputPassword2" placeholder="Repeat Password">
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+
+</form>
+
+
+{% endblock %}
