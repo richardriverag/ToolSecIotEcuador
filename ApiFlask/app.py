@@ -1,7 +1,7 @@
 import re
 from flask import Flask, render_template, request, url_for, redirect, session
 import pymongo
-import bcrypt
+import bcrypt 
 from datetime import datetime
 from bson.objectid import ObjectId
 
@@ -11,14 +11,14 @@ app.secret_key = b'\xcc^\x91\xea\x17-\xd0W\x03\xa7\xf8J0\xac8\xc5'
 
 client = 'test'
 passdb = 'At3rpWYk4QYwQpW'
-dbname = 'iotecuador'
-client = pymongo.MongoClient("mongodb+srv://"+client+":"+passdb +"@cluster0.wdghc.mongodb.net/"+dbname+"?retryWrites=true&w=majority")
+dbname = 'mydb'
+client = pymongo.MongoClient("mongodb+srv://jeff:Barcelona1925@cluster0.j8qp4.mongodb.net/mydb?retryWrites=true&w=majority")
 
 #get the database name
 db = client.get_database(dbname)
 #get the particular collection that contains the data
-Devicesdb = db.Devices
-Userdb = db.User
+Devicesdb = db.todos
+Userdb = db.user
 
 
 

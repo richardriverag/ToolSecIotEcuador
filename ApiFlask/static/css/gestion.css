@@ -65,6 +65,7 @@
     background-position: center;
     background-size: cover;
     object-fit: cover;
+    padding-top: 50px;
   }
   
   .contenedor {
@@ -94,6 +95,9 @@
       text-align: center;
       background-color: var(--color-info-700);
       color: var(--color-info-100);
+      border: 50px;
+      padding-bottom: 200px;
+      
   }
   
   nav li{
@@ -190,7 +194,7 @@
   }
   
   .imagen-port{
-    width: 24%;
+    width: 200px;
     height: 200px;
     margin-bottom: 10px;
     overflow: hidden;
@@ -255,10 +259,11 @@
   }
   
   .cards .card img{
-    width: 100px;
-    height: 100px;
+    
+    width: 120px;
+    height: 120px;
     object-fit: cover;
-    border: 3px solid #fff;
+    border: 1px solid #fff;
     border-radius: 50%;
     display: block;
   }
@@ -512,3 +517,4 @@
           font-size: 20px;
       }
   }
+ 

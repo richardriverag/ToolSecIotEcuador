@@ -1,5 +1,5 @@
 {% extends "Access/base.html" %}
-{% block title %}Register System{% endblock %}
+{% block title %}Sistema de registro{% endblock %}
 
 {% block content %}
 
@@ -9,30 +9,41 @@
     </div>
 {% endif %}
 
-<form action="" method="post">
-    <div class="form-group">
-        <label for="Fullname">Full name</label>
-        <input name="fullname" class="form-control" id="inputFullName" aria-describedby="emailHelp" placeholder="Enter full name">
-        <small id="fullName" class="form-text text-muted">Please enter your full name(First name and Last name)</small>
+<form action="" method="post" class="registro">
+ <h1>Registrate</h1>
+ <div class="contenedor">
+   
+  <div class="input-contenedor">
+        
+        <i class="fas fa-user icon"></i>
+        <input name="fullname" class="form-control" id="inputFullName" aria-describedby="emailHelp" placeholder="Ingrese su nombre completo">
+        
   </div>
-  <div class="form-group">
-        <label for="InputEmail">Email address</label>
-        <input name="email" class="form-control" id="InputEmail"  placeholder="Enter email">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  
+  <div class="input-contenedor">
+        
+        <i class="fas fa-envelope-square icon"></i>
+        <input name="email" class="form-control" id="InputEmail"  placeholder="Ingrese un email">
+        
   </div>
-  <div class="form-group">
-    <label for="InputPassword">Password</label>
-    <input type="password" name="password1" class="form-control" id="InputPassword" placeholder="Password">
+  <div class="input-contenedor">
+    
+    <i class="fas fa-key icon"></i>
+    <input type="password" name="password1" class="form-control" id="InputPassword" placeholder="Ingrese su contraseña">
   </div>
 
-    <div class="form-group">
-    <label for="InputPassword2">Repeat Password</label>
-    <input type="password" name="password2" class="form-control" id="InputPassword2" placeholder="Repeat Password">
+    <div class="input-contenedor">
+    
+    <i class="fas fa-key icon"></i>
+    <input type="password" name="password2" class="form-control" id="InputPassword2" placeholder="Repita su contraseña">
 
     </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="button">Registrate</button>
+  <p>Al registrarte, aceptas nuestros terminos y condiones</p>
+  <p>¿Ya tienes cuenta?<a class="link" href="/login">Iniciar sesión</a></p>
 
 
+</div>
 </form>
 
 
