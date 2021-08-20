@@ -23,6 +23,7 @@ db = client.get_database(dbname)
 Devicesdb = db.Devices
 Userdb = db.User
 
+
 # inciar
 @app.route("/")
 def index():
@@ -126,6 +127,7 @@ def logout():
         return render_template('Access/register.html')
 
 
+
 # Dashboard
 @app.route('/dashboard')
 def home():
@@ -141,26 +143,18 @@ def home():
         # Listar 10 direcciones "Estado":True
         Ipv4True = Devicesdb.find({'Estado': True}).limit(10)
         cantidad = Ipv4True.count()
-
+        
         # Listar todas la direcciones IPv4 Analizadas
-        AllIPv4 = Devicesdb.find().count()
 
         # Contenedor de información 
-        datainfo = [
-            {
-                'PuertoTrue': cantidad,
-                'AllIPv4': AllIPv4,
-                'Filter': ""
-            }
-        ]
+        data = datainfo(cantidad, "")
 
         #activar rutas.
         assetUrl = 'activo'
 
-        return render_template('dashboard/home.html', filters=Ipv4True, datos=datainfo, users=info_user, assets=assetUrl)
+        return render_template('dashboard/home.html', filters=Ipv4True, datos=data, users=info_user, assets=assetUrl)
     else:
         return redirect(url_for("login"))
-
 
 # busqueda por dirección Ipv4 Estado:True
 @app.route('/dashboard/ipv4/<id>', methods=['GET'])
@@ -172,43 +166,20 @@ def get_ipv4(id):
         return redirect(url_for('home'))
 
 
-# busqueda por cuidad
-@app.route('/dashboard/cuidad/<city>', methods=['GET'])
-def get_city(city):
-    if "email" in session:
-        todo_city = Devicesdb.find({'Locatizacion.city': str(city)})
-        print("todo_city",todo_city)
-
-
-
-        return render_template('dashboard/city.html', items=todo_city)
-    else:
-        return redirect(url_for('home'))
-
-
-
 @app.route('/dashboard', methods=['POST'])
 def filter_info():
     #obtener parametros
     filter = request.form.get('filter')
     parameter = request.form.get('parameter')
 
-
     # Busqueda por dirección IPv4
     if(str(parameter) == "Dirección"):
             # filtro
         todo_filter = Devicesdb.find({'Direccion': filter})
         cantidad = todo_filter.count()
-        AllIPv4 = Devicesdb.find().count()
-        datainfo = [
-                    {
-                        'PuertoTrue': cantidad,
-                        'AllIPv4': AllIPv4,
-                        'Filter': filter
-                    }
-                ]
+        data = var(cantidad, filter)
         asset = 'activo'
-        return render_template('dashboard/home.html', filters=todo_filter,datos = datainfo, assets=asset,) 
+        return render_template('dashboard/home.html', filters=todo_filter,datos = data, assets=asset,) 
 
 
     # Busqueda por dirección Puerto
@@ -217,15 +188,9 @@ def filter_info():
         todo_filter = Devicesdb.find({'puerto.Puerto': filter})
         cantidad = todo_filter.count()
         AllIPv4 = Devicesdb.find().count()
-        datainfo = [
-                    {
-                        'PuertoTrue': cantidad,
-                        'AllIPv4': AllIPv4,
-                        'Filter': filter
-                    }
-                ]
+        data = var(cantidad, filter)
         asset = 'activo'
-        return render_template('dashboard/home.html', filters=todo_filter,datos=datainfo, assets=asset)
+        return render_template('dashboard/home.html', filters=todo_filter,datos=data, assets=asset)
 
 
     #Busqueda por Cuidad
@@ -240,32 +205,19 @@ def filter_info():
         AllIPv4 = Devicesdb.find().count()
 
         # Contenedor de información 
-        datainfo = [
-            {
-                'PuertoTrue': cantidad,
-                'AllIPv4': AllIPv4,
-                'Filter': filter
-            }
-        ]
+        data = var(cantidad, filter)
         asset = 'activo'
-        return render_template('dashboard/home.html', filters=todo_filter, datos=datainfo, assets=asset)
+        return render_template('dashboard/home.html', filters=todo_filter, datos=data, assets=asset)
 
     if(str(parameter) == "GeoLocalización"):
 
         capitalize = filter.capitalize()
         todo_filter = Devicesdb.find({'Locatizacion.city': capitalize})
         cantidad = todo_filter.count()
-        AllIPv4 = Devicesdb.find().count()
-        datainfo = [
-            {
-                'PuertoTrue': cantidad,
-                'AllIPv4': AllIPv4,
-                'Filter': filter
-            }
-        ]
+        data = var(cantidad, filter)
         
         asset = 'activo'
-        return render_template('dashboard/home.html', filters=todo_filter, datos=datainfo, assets=asset)
+        return render_template('dashboard/home.html', filters=todo_filter, datos=data, assets=asset)
 
     else:
         msg = "Ups! algo salio mal :("
@@ -289,3 +241,18 @@ def blog():
 @app.route("/rango_direcciones", methods=['GET'])
 def rango():
     return render_template('dashboard/direcciones.html')
+
+
+def datainfo(cantidad, filter):
+    AllIPv4 = Devicesdb.find().count()
+    datainfo = [
+            {
+                'PuertoTrue': cantidad,
+                'AllIPv4': AllIPv4,
+                'Filter': filter
+            }
+        ]
+
+    return datainfo
+
+var = datainfo
