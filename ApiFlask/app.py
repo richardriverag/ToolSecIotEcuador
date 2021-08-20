@@ -1,4 +1,4 @@
-import re
+import os
 from flask import Flask, render_template, request, url_for, redirect, session
 import pymongo
 import bcrypt 
@@ -7,31 +7,33 @@ from bson.objectid import ObjectId
 
 
 app = Flask(__name__)
-app.secret_key = b'\xcc^\x91\xea\x17-\xd0W\x03\xa7\xf8J0\xac8\xc5'
+key = os.urandom(24)
+app.secret_key = key
+#app.secret_key = b'\xcc^\x91\xea\x17-\xd0W\x03\xa7\xf8J0\xac8\xc5'
 
-client = 'test'
-passdb = 'At3rpWYk4QYwQpW'
-dbname = 'mydb'
-client = pymongo.MongoClient("mongodb+srv://jeff:Barcelona1925@cluster0.j8qp4.mongodb.net/mydb?retryWrites=true&w=majority")
+client = 'client'
+passdb = 'kJwNCrAnmv4eXpwU'
+dbname = 'iotecuador'
 
-#get the database name
+client = pymongo.MongoClient("mongodb+srv://"+client+":"+passdb +
+                                 "@iotecuador.qbeh8.mongodb.net/"+dbname+"?retryWrites=true&w=majority")
+# get the database name
 db = client.get_database(dbname)
-#get the particular collection that contains the data
-Devicesdb = db.todos
-Userdb = db.user
+# get the particular collection that contains the data
+Devicesdb = db.Devices
+Userdb = db.User
 
-
-
-#inciar
+# inciar
 @app.route("/")
 def index():
     return render_template('Access/index.html')
 
-#registrar
+
+# registrar
 @app.route("/register", methods=['POST', 'GET'])
 def register():
     message = ''
-    #if method post in index
+    # if method post in index
     if "email" in session:
         return redirect(url_for("home"))
     if request.method == "POST":
@@ -39,7 +41,7 @@ def register():
         email = request.form.get("email")
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
-        #if found in database showcase that it's found 
+        # if found in database showcase that it's found
         user_found = Userdb.find_one({"name": username})
         email_found = Userdb.find_one({"email": email})
         if user_found:
@@ -52,28 +54,32 @@ def register():
             message = 'Passwords should match!'
             return render_template('Access/register.html', message=message)
         else:
-            #hash the password and encode it
+            # hash the password and encode it
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
 
-            #get date_joined.
+            # get date_joined.
             date = datetime.now()
 
-            #assing them in a dictionary in key value pairs
-            user_input = {'last_login': date, 'username': username, 'first_name':"", 'last_name':"", 'email': email, 'password': hashed, 'is_active':True, 'date_joined': date}
-            #insert it in the record collection
+            # assing them in a dictionary in key value pairs
+            user_input = {'last_login': date, 'username': username, 'first_name': "", 'last_name': "",
+                          'email': email, 'password': hashed, 'is_active': True, 'date_joined': date}
+            # insert it in the record collection
             Userdb.insert_one(user_input)
-            
-            #find the new created account and its email
+
+            # find the new created account and its email
             user_data = Userdb.find_one({"email": email})
-            new_email = user_data['email']
-            asset='activo'
-            #if registered redirect to logged in as the registered user
-            return render_template('Dashboard/home.html', email=new_email, assets=asset)
-            
+            email_val= user_data['email']
+            info_user = user_data['username']
+            asset = 'activo'
+            session["email"] = email_val
+            # if registered redirect to logged in as the registered user
+            #return render_template('dashboard/home.html', users=info_user, assets=asset)
+            return redirect(url_for('home'))
+
     return render_template('Access/register.html')
 
 
-
+# ingresar
 @app.route("/login", methods=["POST", "GET"])
 def login():
     message = 'Please login to your account'
@@ -84,19 +90,20 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        #check if email exists in database
+        # check if email exists in database
         email_found = Userdb.find_one({"email": email})
 
         if email_found:
             email_val = email_found['email']
             passwordcheck = email_found['password']
-            #encode the password and check if it matches
+            # encode the password and check if it matches
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
 
-                #get date_joined.
+                # get date_joined.
                 date = datetime.now()
-                last_login = Userdb.update_one({"email": str(email_val)}, {"$set": {"last_login": date}})
+                last_login = Userdb.update_one({"email": str(email_val)}, {
+                                               "$set": {"last_login": date}})
                 return redirect(url_for('home'))
             else:
                 if "email" in session:
@@ -119,86 +126,166 @@ def logout():
         return render_template('Access/register.html')
 
 
-
-
-#Dashboard
-@app.route('/Dashboard')
+# Dashboard
+@app.route('/dashboard')
 def home():
+
+    #validación de correo
     if "email" in session:
         email = session["email"]
-        saved_todos = Devicesdb.find().limit(10)
-        cantidad = saved_todos.count()
-        asset = 'activo'
-        return render_template('Dashboard/home.html', filters=saved_todos, cantidades = cantidad,email=email, assets=asset)
+
+        # Obtener información de usuario 
+        user_found = Userdb.find_one({"email": email})
+        info_user = user_found['username']
+
+        # Listar 10 direcciones "Estado":True
+        Ipv4True = Devicesdb.find({'Estado': True}).limit(10)
+        cantidad = Ipv4True.count()
+
+        # Listar todas la direcciones IPv4 Analizadas
+        AllIPv4 = Devicesdb.find().count()
+
+        # Contenedor de información 
+        datainfo = [
+            {
+                'PuertoTrue': cantidad,
+                'AllIPv4': AllIPv4,
+                'Filter': ""
+            }
+        ]
+
+        #activar rutas.
+        assetUrl = 'activo'
+
+        return render_template('dashboard/home.html', filters=Ipv4True, datos=datainfo, users=info_user, assets=assetUrl)
     else:
         return redirect(url_for("login"))
 
 
-@app.route('/Dashboard/busqueda/<id>', methods=['GET'])
-def get_info(id):
-    todo_item = Devicesdb.find({'_id': ObjectId(id)})
-    return render_template('Dashboard/busqueda.html', items = todo_item)
+# busqueda por dirección Ipv4 Estado:True
+@app.route('/dashboard/ipv4/<id>', methods=['GET'])
+def get_ipv4(id):
+    if "email" in session:
+        todo_Ipv4 = Devicesdb.find({'_id': ObjectId(id)})
+        return render_template('dashboard/busqueda.html', items=todo_Ipv4)
+    else:
+        return redirect(url_for('home'))
+
+
+# busqueda por cuidad
+@app.route('/dashboard/cuidad/<city>', methods=['GET'])
+def get_city(city):
+    if "email" in session:
+        todo_city = Devicesdb.find({'Locatizacion.city': str(city)})
+        print("todo_city",todo_city)
 
 
 
-@app.route('/Dashboard', methods=['POST'])
+        return render_template('dashboard/city.html', items=todo_city)
+    else:
+        return redirect(url_for('home'))
+
+
+
+@app.route('/dashboard', methods=['POST'])
 def filter_info():
+    #obtener parametros
     filter = request.form.get('filter')
     parameter = request.form.get('parameter')
 
+
+    # Busqueda por dirección IPv4
     if(str(parameter) == "Dirección"):
+            # filtro
         todo_filter = Devicesdb.find({'Direccion': filter})
         cantidad = todo_filter.count()
-        print("catidad", cantidad)
+        AllIPv4 = Devicesdb.find().count()
+        datainfo = [
+                    {
+                        'PuertoTrue': cantidad,
+                        'AllIPv4': AllIPv4,
+                        'Filter': filter
+                    }
+                ]
         asset = 'activo'
-        return render_template('Dashboard/home.html', filters=todo_filter, cantidades=cantidad, assets=asset)
+        return render_template('dashboard/home.html', filters=todo_filter,datos = datainfo, assets=asset,) 
 
+
+    # Busqueda por dirección Puerto
     if(str(parameter) == "Puerto"):
-    
+
         todo_filter = Devicesdb.find({'puerto.Puerto': filter})
         cantidad = todo_filter.count()
-        print("catidad", cantidad)
+        AllIPv4 = Devicesdb.find().count()
+        datainfo = [
+                    {
+                        'PuertoTrue': cantidad,
+                        'AllIPv4': AllIPv4,
+                        'Filter': filter
+                    }
+                ]
         asset = 'activo'
-        return render_template('Dashboard/home.html', filters=todo_filter, cantidades=cantidad,assets=asset)
+        return render_template('dashboard/home.html', filters=todo_filter,datos=datainfo, assets=asset)
 
+
+    #Busqueda por Cuidad
     if(str(parameter) == "Cuidad"):
-
+        
         capitalize = filter.capitalize()
-        todo_filter = Devicesdb.find({'Locatizacion.city': capitalize})
+
+        todo_filter = Devicesdb.find({'Locatizacion.city': capitalize, 'Estado': True})
         cantidad = todo_filter.count()
-        print("catidad", cantidad)
+        
+        # Listar todas la direcciones IPv4 Analizadas por Cuidad
+        AllIPv4 = Devicesdb.find().count()
+
+        # Contenedor de información 
+        datainfo = [
+            {
+                'PuertoTrue': cantidad,
+                'AllIPv4': AllIPv4,
+                'Filter': filter
+            }
+        ]
         asset = 'activo'
-        return render_template('Dashboard/home.html', filters=todo_filter, cantidades=cantidad, assets=asset)
+        return render_template('dashboard/home.html', filters=todo_filter, datos=datainfo, assets=asset)
 
     if(str(parameter) == "GeoLocalización"):
-   
+
         capitalize = filter.capitalize()
         todo_filter = Devicesdb.find({'Locatizacion.city': capitalize})
         cantidad = todo_filter.count()
-        print("catidad", cantidad)
+        AllIPv4 = Devicesdb.find().count()
+        datainfo = [
+            {
+                'PuertoTrue': cantidad,
+                'AllIPv4': AllIPv4,
+                'Filter': filter
+            }
+        ]
+        
         asset = 'activo'
-        return render_template('Dashboard/home.html', filters=todo_filter, cantidades=cantidad, assets=asset)
+        return render_template('dashboard/home.html', filters=todo_filter, datos=datainfo, assets=asset)
 
     else:
         msg = "Ups! algo salio mal :("
         asset = 'activo'
         return redirect(url_for('home'))
 
-    
-    
-#User
+
+# Actulizar InfoUser
 @app.route("/setting", methods=['POST', 'GET'])
 def user():
-
-
-
-
     asset = 'activo'
-    return render_template('User/setting.html',assets = asset )
+    return render_template('user/setting.html', assets=asset)
+
+
+# https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login-es
+
 @app.route("/blog", methods=['GET'])
 def blog():
-    return render_template('Dashboard/blog.html')
+    return render_template('dashboard/blog.html')
 
 @app.route("/rango_direcciones", methods=['GET'])
 def rango():
-    return render_template('Dashboard/direcciones.html')
+    return render_template('dashboard/direcciones.html')

@@ -45,9 +45,9 @@ h5{
     color: black;
 }
 .box{
-    position: absolute;
+    position: relative;
     left: 10%;
-   top: 70%;
+    top: 70%;
     transform: translate(-10%, -30%);
 }
 input{
