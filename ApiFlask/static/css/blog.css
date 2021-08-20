@@ -1,0 +1,100 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.post-list{
+    display: flex;
+    min-height: 100hv;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 15p;
+}
+
+.content{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+.post-img-1{
+    background: url("https://branch.com.co/wp-content/uploads/2021/05/estadisticas-de-la-situacion-digital-de-ecuador-2020-2021-31.png");
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    transition: .2s;
+}
+
+.post-img-2{
+    background: url("https://branch.com.co/wp-content/uploads/2021/05/estadisticas-de-la-situacion-digital-de-ecuador-2020-2021-31.png");
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    transition: .2s;
+}
+
+.post-img-3{
+    background: url("https://branch.com.co/wp-content/uploads/2021/05/estadisticas-de-la-situacion-digital-de-ecuador-2020-2021-31.png");
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    transition: .2s;
+}
+.post{
+    box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 1);
+    transition: .2s;
+
+}
+.post:hover{
+    transform: translate(-4px);
+    box-shadow: 0 1px 14px 2px rgba(0, 0, 0, -15);
+}
+
+.post-header{
+    width: 100%;
+    height: 200px;
+    /*overflow: hidden;*/
+    cursor: pointer;
+}
+.post:hover .post-img-1,
+.post:hover .post-img-2,
+.post:hover .post-img-3{
+    transform: scale(1.1);
+}
+.post-body{
+    padding: 15px;
+    text-align: center;
+}
+
+.post-body span{
+    display: inline-block;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.post-body h2{
+    margin-bottom: 15px;
+}
+.post-body p{
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 840px){
+    .content{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 600px){
+    .content{
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+

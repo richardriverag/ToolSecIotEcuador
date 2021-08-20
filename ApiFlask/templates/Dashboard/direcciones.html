@@ -1,0 +1,47 @@
+{% extends "Access/base.html" %}{% block content %}
+
+<div class="container-fluid" id="main-container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-plain">
+          <div class="card-header">
+            <h4 class="card-title">Lista de Direcciones Ipv4</h4>
+            <p class="category">Cantidad de busquedas: {{ cantidades }}</p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table >
+                
+                  <tr>
+                    <th>Dirección IPv4 inicial</th>
+                    <th>Dirección IPv4 final</th>
+                    <th>Total</th>
+                    <th>Ciudad</th>
+                  </tr>
+                
+                  <tr>
+                    <td>8.242.216.0</td>
+                    <td>8.242.223.255</td>
+                    <td>2,048</td>
+                    <td></td>
+                  </tr>               
+                  <tr>               
+                    <td>19°C</td>               
+                    <td>17°C</td>              
+                    <td>12°C</td>            
+                  </tr>           
+                  <tr>       
+                    <td>E 13 km/h</td>
+                  <td>E 11 km/h</td>              
+                    <td>S 16 km/h</td>               
+                  </tr>            
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+{% endblock %}

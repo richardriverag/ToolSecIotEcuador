@@ -195,3 +195,10 @@ def user():
 
     asset = 'activo'
     return render_template('User/setting.html',assets = asset )
+@app.route("/blog", methods=['GET'])
+def blog():
+    return render_template('Dashboard/blog.html')
+
+@app.route("/rango_direcciones", methods=['GET'])
+def rango():
+    return render_template('Dashboard/direcciones.html')

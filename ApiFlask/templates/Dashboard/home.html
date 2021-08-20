@@ -1,5 +1,35 @@
 {% extends "Access/base.html" %}{% block content %}
 
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card-body">
+        <h5 class="card-title">Direcciones IPv4 asignadas para ecuador </h5>
+        <h6># Direcciones IPv4 dentro de territorio Ecuatoriano</p>
+        <li class="lista">2,780,345 </li>
+        <h6># Direcciones IPv4 almacenadas</p>
+          <li class="lista">8227</li>
+          <a href="https://lite.ip2location.com/ecuador-ip-address-ranges?lang=es" class="btn btn-primary" target="_blank">Ver más >></a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card-body">
+        <h5 class="card-title">Dispositivos desplegados en Ecuador</h5>
+        <h6 >El número de dispositivos móviles conectados en el país es de 13.82 millones, lo que constituye un 77,8% de la población.</h6>
+        <a href="/blog" class="btn btn-primary">Ver más >></a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card-body">
+        <h5 class="card-title">Estudio de direcciones IPv4</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Ver más >></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="box">
   <form action="{{ url_for('filter_info') }}" method="POST" role="form">
     
@@ -15,11 +45,6 @@
     
   </form>
 </div>
-
-<div class="saludo">
-  <p>Hola! has iniciado sesion {{ email }}</p>
-</div>
-
 <div class="container-fluid" id="main-container">
   <div class="row">
     <div class="col-md-12">
