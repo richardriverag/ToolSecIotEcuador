@@ -1,9 +1,12 @@
+import json
 import os
 from flask import Flask, render_template, request, url_for, redirect, session
 import pymongo
 import bcrypt 
 from datetime import datetime
 from bson.objectid import ObjectId
+from bson.json_util import dumps, loads
+
 
 
 app = Flask(__name__)
@@ -177,7 +180,7 @@ def filter_info():
             # filtro
         todo_filter = Devicesdb.find({'Direccion': filter})
         cantidad = todo_filter.count()
-        data = var(cantidad, filter)
+        data = varIpv4(cantidad, filter)
         asset = 'activo'
         return render_template('dashboard/home.html', filters=todo_filter,datos = data, assets=asset,) 
 
@@ -187,37 +190,27 @@ def filter_info():
 
         todo_filter = Devicesdb.find({'puerto.Puerto': filter})
         cantidad = todo_filter.count()
-        AllIPv4 = Devicesdb.find().count()
-        data = var(cantidad, filter)
+        data = varIpv4(cantidad, filter)
         asset = 'activo'
         return render_template('dashboard/home.html', filters=todo_filter,datos=data, assets=asset)
 
 
     #Busqueda por Cuidad
     if(str(parameter) == "Cuidad"):
-        
+        #Hacer que la primera letra sea Mayúscula
         capitalize = filter.capitalize()
-
+        #Filtro por cuidad
         todo_filter = Devicesdb.find({'Locatizacion.city': capitalize, 'Estado': True})
         cantidad = todo_filter.count()
-        
-        # Listar todas la direcciones IPv4 Analizadas por Cuidad
-        AllIPv4 = Devicesdb.find().count()
 
+        cityPort = varGeoCity(capitalize)
+
+        print("cantiad de Puertos", cityPort)
+        
         # Contenedor de información 
-        data = var(cantidad, filter)
+        data = varIpv4(cantidad, filter)
         asset = 'activo'
-        return render_template('dashboard/home.html', filters=todo_filter, datos=data, assets=asset)
-
-    if(str(parameter) == "GeoLocalización"):
-
-        capitalize = filter.capitalize()
-        todo_filter = Devicesdb.find({'Locatizacion.city': capitalize})
-        cantidad = todo_filter.count()
-        data = var(cantidad, filter)
-        
-        asset = 'activo'
-        return render_template('dashboard/home.html', filters=todo_filter, datos=data, assets=asset)
+        return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data, assets=asset)
 
     else:
         msg = "Ups! algo salio mal :("
@@ -243,16 +236,47 @@ def rango():
     return render_template('dashboard/direcciones.html')
 
 
+#filtro de número de direcciones
 def datainfo(cantidad, filter):
     AllIPv4 = Devicesdb.find().count()
-    datainfo = [
+    dataInfo = [
             {
                 'PuertoTrue': cantidad,
                 'AllIPv4': AllIPv4,
                 'Filter': filter
             }
+            
         ]
 
-    return datainfo
+    return dataInfo
 
-var = datainfo
+varIpv4 = datainfo
+
+
+#filtro por cuidades
+
+def datacity(capitalize):
+    #filtrado que muestre solo los puertos.
+    #cluster = Devicesdb.find({'Locatizacion.city': capitalize, 'Estado': True},
+                            #{"puerto.Puerto":1})
+
+    PortsList = [22, 23, 25, 53, 80, 81, 110, 180, 443, 873, 2323, 5000, 5001, 5094, 5150, 5160, 7547, 8080, 8100, 8443, 8883, 49152, 52869, 56000,
+                 1728, 3001, 8008, 8009, 10001, 223, 1080, 1935, 2332, 8888, 9100, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 21, 554, 888, 1159, 1160, 1161,
+                 1435, 1518, 3389, 4550, 5005, 5400, 5550, 6550, 7000, 8000, 8081, 8090, 8150, 8866, 9000, 9650, 9999, 10000, 18004, 25001, 30001, 34567, 37777,
+                 69, 135, 161, 162, 4786, 5431, 8291, 37215, 53413]
+
+    port_Info = []
+
+    for x in PortsList:
+        #Filtro
+        port_filter = Devicesdb.find({'Locatizacion.city': capitalize, 'puerto.Puerto': str(x) })
+        #Cantidad de Puertos
+        cantidad = port_filter.count()
+        if cantidad != 0:
+            #add port_info
+            puerto = {"Puerto": str(x), "Cantidad": cantidad}
+            port_Info.append(puerto)
+
+    return port_Info
+
+varGeoCity = datacity

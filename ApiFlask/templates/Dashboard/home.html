@@ -48,8 +48,6 @@
 </div>
 
 
-
-
   <div class="saludo">
     <p>Hola! has iniciado sesion {{users}}</p>
   </div>
@@ -62,13 +60,27 @@
   {% endif %}
 
 
-
   {% if error %}
   <div class="error">
     <p>{{ error }}</p>
   </div>
   {% else %}
   <p>{{ error }}</p>
+
+
+
+
+<div>
+  <P>Analisis de Puertos</P>
+  <ul>
+    {% for city in cities %}
+    <li>
+      Puerto: {{city.Puerto}} | Cantidad: {{city.Cantidad}}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
 
 <div class="container-fluid" id="main-container">
   <div class="row">
