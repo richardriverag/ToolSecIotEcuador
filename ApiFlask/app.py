@@ -200,7 +200,7 @@ def filter_info():
         #Hacer que la primera letra sea Mayúscula
         capitalize = filter.capitalize()
         #Filtro por cuidad
-        todo_filter = Devicesdb.find({'Locatizacion.city': capitalize, 'Estado': True})
+        todo_filter = Devicesdb.find({'Localizacion.city': capitalize, 'Estado': True})
         cantidad = todo_filter.count()
 
         cityPort = varGeoCity(capitalize)
@@ -257,7 +257,7 @@ varIpv4 = datainfo
 
 def datacity(capitalize):
     #filtrado que muestre solo los puertos.
-    #cluster = Devicesdb.find({'Locatizacion.city': capitalize, 'Estado': True},
+    #cluster = Devicesdb.find({'Localizacion.city': capitalize, 'Estado': True},
                             #{"puerto.Puerto":1})
 
     PortsList = [22, 23, 25, 53, 80, 81, 110, 180, 443, 873, 2323, 5000, 5001, 5094, 5150, 5160, 7547, 8080, 8100, 8443, 8883, 49152, 52869, 56000,
@@ -269,7 +269,7 @@ def datacity(capitalize):
 
     for x in PortsList:
         #Filtro
-        port_filter = Devicesdb.find({'Locatizacion.city': capitalize, 'puerto.Puerto': str(x) })
+        port_filter = Devicesdb.find({'Localizacion.city': capitalize, 'puerto.Puerto': str(x) })
         #Cantidad de Puertos
         cantidad = port_filter.count()
         if cantidad != 0:
