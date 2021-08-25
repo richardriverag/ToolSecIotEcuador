@@ -1,0 +1,78 @@
+{% extends "Access/base.html" %}
+{% block content %}
+
+<h1>Panel de administración</h1>
+
+<div class="container-fluid" id="main-container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-plain">
+          <div class="card-header">
+            <h4 class="card-title">Lista de Usuarios</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table >
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>correo</th>
+                    <th>Fecha</th>
+                    <th>Mensaje</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                {% for userlist in userslist %}
+                <tbody>
+                  <tr>
+                    <td>
+                        {{ userlist.first_name }} {{ userlist.last_name }}
+                    </td>
+  
+                    <td>
+                        {{ userlist.email }}
+                    </td>
+
+                    <td> 
+                        {{ userlist.date_joined.strftime('%Y-%m-%d') }}
+                    </td>
+  
+                    <td>
+                        {{userlist.msg}}
+                    </td>
+
+                    <td>
+
+                      {% if userlist.is_active == False %}
+
+                      <a href="{{ url_for('get_user', id= userlist._id)}}">
+                      <button type="button" class="btn btn-success">
+                        Activar 
+                      </button>
+                      </a>
+                    </td>
+
+                      {% else %}
+
+                    <a href="{{ url_for('get_user', id= userlist._id)}}">
+                      <button type="button" class="btn btn-danger">
+                        Desactivar 
+                      </button>
+                      </a>
+                    </td>
+
+                    {% endif %}
+
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

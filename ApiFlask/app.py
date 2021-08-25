@@ -4,12 +4,15 @@ import bcrypt
 from datetime import datetime
 from bson.objectid import ObjectId
 from filtros import getDevice_db, getClient_db, datainfo, datacity
+from flask_login import LoginManager, login_required, current_user, login_user, logout_user
+from functools import wraps
 
 app = Flask(__name__)
-
 #app.secret_key
 key = os.urandom(24)
 app.secret_key = key
+
+
 
 #Device client
 Devicesdb = getDevice_db()
@@ -24,8 +27,68 @@ varIpv4 = datainfo
 varGeoCity = datacity
 
 
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+@login_manager.user_loader
+def load_user(username):
+    u = Userdb.find_one({"email": username})
+    if not u:
+        return None
+    return User(username = u['email'], role=u['role'], id=u['_id'])
+
+
+class User:
+    def __init__(self, id, username, role) -> None:
+        self.id = id
+        self.username = username
+        self.role = role
+
+    @staticmethod
+    def is_authenticated():
+        return True
+
+    @staticmethod
+    def is_active():
+        return True
+
+    @staticmethod
+    def is_anonymous():
+        return False
+
+    def get_id(self):
+        return self.username
+
+
+
+### custom wrap to determine role access  ### 
+def roles_required(*role_names):
+    def decorator(original_route):
+        @wraps(original_route)
+        def decorated_route(*args, **kwargs):
+            if not current_user.is_authenticated:
+                print('The user is not authenticated.')
+                return redirect(url_for('login'))
+            
+            print(current_user.role)
+            print(role_names)
+            if not current_user.role in role_names:
+                print('The user does not have this role.')
+                return redirect(url_for('login'))
+            else:
+                print('The user is in this role.')
+                return original_route(*args, **kwargs)
+        return decorated_route
+    return decorator
+
+
+
+
 # inciar
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def index():
     return render_template('Access/index.html')
 
@@ -35,25 +98,34 @@ def index():
 def register():
     message = ''
     # if method post in index
-    if "email" in session:
+    if current_user.is_authenticated:
         return redirect(url_for("home"))
     if request.method == "POST":
-        username = request.form.get("fullname")
+        username = request.form.get("name")
+        lastname = request.form.get("lastname")
         email = request.form.get("email")
+        msg = request.form.get("texto")
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
+        #TEXTBOX DEL porq quieres usar el sistema.
+
         # if found in database showcase that it's found
         user_found = Userdb.find_one({"name": username})
         email_found = Userdb.find_one({"email": email})
+
+
         if user_found:
             message = 'There already is a user by that name'
             return render_template('Access/register.html', message=message)
         if email_found:
             message = 'This email already exists in database'
             return render_template('Access/register.html', message=message)
+
         if password1 != password2:
             message = 'Passwords should match!'
             return render_template('Access/register.html', message=message)
+
+
         else:
             # hash the password and encode it
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
@@ -62,8 +134,8 @@ def register():
             date = datetime.now()
 
             # assing them in a dictionary in key value pairs
-            user_input = {'last_login': date, 'username': username, 'first_name': "", 'last_name': "",
-                          'email': email, 'password': hashed, 'is_active': True, 'date_joined': date}
+            user_input = {'last_login': date, 'username': None, 'first_name': username, 'last_name': lastname, 'msg': msg, 
+                          'email': email, 'password': hashed, 'is_active': False, 'date_joined': date, 'role': "user"}
             # insert it in the record collection
             Userdb.insert_one(user_input)
 
@@ -71,69 +143,70 @@ def register():
             user_data = Userdb.find_one({"email": email})
             email_val= user_data['email']
             info_user = user_data['username']
-            asset = 'activo'
-            session["email"] = email_val
-            # if registered redirect to logged in as the registered user
-            #return render_template('dashboard/home.html', users=info_user, assets=asset)
+
+
             return redirect(url_for('home'))
 
     return render_template('Access/register.html')
 
 
 # ingresar
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    message = 'Please login to your account'
-    if "email" in session:
-        return redirect(url_for("home"))
 
+    message = 'Please login to your account'
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
 
         # check if email exists in database
         email_found = Userdb.find_one({"email": email})
+        is_active = email_found['is_active']
 
-        if email_found:
-            email_val = email_found['email']
-            passwordcheck = email_found['password']
-            # encode the password and check if it matches
-            if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
-                session["email"] = email_val
-
-                # get date_joined.
-                date = datetime.now()
-                last_login = Userdb.update_one({"email": str(email_val)}, {
-                                               "$set": {"last_login": date}})
-                return redirect(url_for('home'))
+        if is_active == True:
+            if email_found:
+                email_val = email_found['email']
+                passwordcheck = email_found['password']
+                # encode the password and check if it matches
+                if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
+                    session["email"] = email_val
+                    user_obj = User(username=email_found['email'], role=email_found['role'], id=email_found['_id'])
+                    login_user(user_obj)
+                    # get date_joined.
+                    date = datetime.now()
+                    last_login = Userdb.update_one({"email": str(email_val)}, {
+                                                "$set": {"last_login": date}})
+                    return redirect(url_for('home'))
+                else:
+                    if current_user.is_authenticated:
+                        return redirect(url_for("home"))
+                    message = 'Wrong password'
+                    return render_template('Access/login.html', message=message)
             else:
-                if "email" in session:
-                    return redirect(url_for("home"))
-                message = 'Wrong password'
-                return render_template('Access/login.html', message=message)
+                message = 'Email not found'
         else:
-            message = 'Email not found'
-
-            return render_template('Access/login.html', message=message)
+            message = 'Aún no se autoriza su cuenta'
+            
+        return render_template('Access/login.html', message=message)
     return render_template('Access/login.html', message=message)
 
 
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
-    if "email" in session:
-        session.pop("email", None)
-        return render_template("Access/index.html")
-    else:
-        return render_template('Access/register.html')
+    logout_user()
+    return render_template('Access/index.html')
 
 
 
 # Dashboard
 @app.route('/dashboard')
+@login_required
+@roles_required('user', 'admin')
 def home():
 
     #validación de correo
-    if "email" in session:
+    if current_user.is_authenticated:
         email = session["email"]
 
         # Obtener información de usuario 
@@ -149,17 +222,14 @@ def home():
         # Contenedor de información 
         data = datainfo(cantidad, "")
 
-        #activar rutas.
-        assetUrl = 'activo'
-
-        return render_template('dashboard/home.html', filters=Ipv4True, datos=data, users=info_user, assets=assetUrl)
+        return render_template('dashboard/home.html', filters=Ipv4True, datos=data, users=info_user)
     else:
         return redirect(url_for("login"))
 
 # busqueda por dirección Ipv4 Estado:True
 @app.route('/dashboard/ipv4/<id>', methods=['GET'])
 def get_ipv4(id):
-    if "email" in session:
+    if current_user.is_authenticated:
         todo_Ipv4 = Devicesdb.find({'_id': ObjectId(id)})
         return render_template('dashboard/busqueda.html', items=todo_Ipv4)
     else:
@@ -167,6 +237,8 @@ def get_ipv4(id):
 
 
 @app.route('/dashboard', methods=['POST'])
+@login_required
+@roles_required('user', 'admin')
 def filter_info():
     #obtener parametros
     filter = request.form.get('filter')
@@ -178,8 +250,8 @@ def filter_info():
         todo_filter = Devicesdb.find({'Direccion': filter})
         cantidad = todo_filter.count()
         data = varIpv4(cantidad, filter)
-        asset = 'activo'
-        return render_template('dashboard/home.html', filters=todo_filter,datos = data, assets=asset,) 
+
+        return render_template('dashboard/home.html', filters=todo_filter,datos = data) 
 
 
     # Busqueda por dirección Puerto
@@ -188,8 +260,8 @@ def filter_info():
         todo_filter = Devicesdb.find({'puerto.Puerto': filter})
         cantidad = todo_filter.count()
         data = varIpv4(cantidad, filter)
-        asset = 'activo'
-        return render_template('dashboard/home.html', filters=todo_filter,datos=data, assets=asset)
+
+        return render_template('dashboard/home.html', filters=todo_filter,datos=data)
 
 
     #Busqueda por Cuidad
@@ -204,29 +276,70 @@ def filter_info():
 
         # Contenedor de información 
         data = varIpv4(cantidad, filter)
-        asset = 'activo'
-        return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data, assets=asset)
+
+        return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data)
 
     else:
         msg = "Ups! algo salio mal :("
-        asset = 'activo'
+
         return redirect(url_for('home'))
+
+
+#Admin Panel
+
+# inciar
+@app.route("/admin_panel", methods=["POST", "GET"])
+@login_required
+@roles_required('admin')
+def admin_panel():
+    if current_user.is_authenticated:
+        email = session["email"]
+
+        # Obtener información de usuario 
+        user_found = Userdb.find()
+
+        
+        return render_template('Admin/admin_panel.html', userslist = user_found)
+    return render_template('Access/index.html')
+
+# busqueda por dirección Ipv4 Estado:True
+@app.route('/admin_panel/<id>', methods=['GET'])
+def get_user(id):
+    if current_user.is_authenticated:
+        user_info = Userdb.find_one({'_id': ObjectId(id)})
+        estado = user_info['is_active']
+        print("+++++++++++++++++++++++++", estado)
+        if estado == False:
+            is_active = Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': True}})
+        else:
+            is_active = Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': False}})
+
+        return redirect(url_for('admin_panel'))
+    else:
+        return redirect(url_for('login'))
+
+
 
 
 # Actulizar InfoUser
 @app.route("/setting", methods=['POST', 'GET'])
+@login_required
+@roles_required('user', 'admin')
 def user():
-    asset = 'activo'
-    return render_template('user/setting.html', assets=asset)
+    return render_template('user/setting.html')
 
 
-# https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login-es
+
 
 @app.route("/blog", methods=['GET'])
+@login_required
+@roles_required('user', 'admin')
 def blog():
     return render_template('dashboard/blog.html')
 
 @app.route("/rango_direcciones", methods=['GET'])
+@login_required
+@roles_required('user', 'admin')
 def rango():
     return render_template('dashboard/direcciones.html')
 
