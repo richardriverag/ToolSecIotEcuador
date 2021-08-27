@@ -5,9 +5,10 @@ import bcrypt
 from datetime import datetime
 from bson.objectid import ObjectId
 from pymongo import message
-from filtros import getDevice_db, getClient_db, datainfo, datacity
+from filtros import getDevice_db, getClient_db, datainfo, datacity, validar_password
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from functools import wraps
+
 
 app = Flask(__name__)
 #app.secret_key
@@ -27,6 +28,9 @@ varIpv4 = datainfo
 
 #Data info
 varGeoCity = datacity
+
+#Validar Pass
+validar_pass = validar_password
 
 
 
@@ -115,20 +119,29 @@ def register():
         user_found = Userdb.find_one({"name": username})
         email_found = Userdb.find_one({"email": email})
 
-
-        if user_found:
-            message = 'There already is a user by that name'
+        if username == "" and lastname == "" and email == "" and msg == "" and password1 == "" and password2 == "":
+            message = 'Todos los campos estan vacios'
             return render_template('Access/register.html', message=message)
+        
+        if username == "" or lastname == "" or email == "" or msg == "" or password1 == "" or password2 == "":
+            message = 'Ninguno de los campos debe estar vacio'
+            return render_template('Access/register.html', message=message)
+
         if email_found:
-            message = 'This email already exists in database'
+            message = 'Ya! Existe un usuario con ese email'
             return render_template('Access/register.html', message=message)
 
         if password1 != password2:
-            message = 'Passwords should match!'
+            message = 'Las contraseñas no coinciden'
+            return render_template('Access/register.html', message=message)
+        
+    
+        if  validar_pass(password1) == False: 
+            message = 'La contraseña no es segura: Min 8 Caracteres, una letra mayusculas y un número y un caracter especial '
             return render_template('Access/register.html', message=message)
 
-
-        else:
+        if "@" in email and "." in email:
+            
             # hash the password and encode it
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
 
@@ -146,8 +159,11 @@ def register():
             email_val= user_data['email']
             info_user = user_data['username']
 
-
             return redirect(url_for('home'))
+        else:
+            message = 'El email no es correcto'
+    
+        return render_template('Access/register.html', message=message)
 
     return render_template('Access/register.html')
 
@@ -159,36 +175,51 @@ def login():
 
     message = ''
     if request.method == "POST":
+
+
         email = request.form.get("email")
         password = request.form.get("password")
 
-        # check if email exists in database
-        email_found = Userdb.find_one({"email": email})
-        is_active = email_found['is_active']
+        
+        if email == "" and password == "":
+            message = 'Todos los campos estan vacios'
+            return render_template('Access/login.html', message=message)
 
-        if is_active == True:
-            if email_found:
-                email_val = email_found['email']
-                passwordcheck = email_found['password']
-                # encode the password and check if it matches
-                if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
-                    session["email"] = email_val
-                    user_obj = User(username=email_found['email'], role=email_found['role'], id=email_found['_id'])
-                    login_user(user_obj)
-                    # get date_joined.
-                    date = datetime.now()
-                    last_login = Userdb.update_one({"email": str(email_val)}, {
-                                                "$set": {"last_login": date}})
-                    return redirect(url_for('home'))
+        if email == "" or password == "":
+            message = 'Ninguno de los campos debe estar vacio'
+            return render_template('Access/login.html', message=message)
+
+        if "@" in email:
+            
+            # check if email exists in database
+            email_found = Userdb.find_one({"email": email})
+            is_active = email_found['is_active']
+
+            if is_active == True:
+                if email_found:
+                    email_val = email_found['email']
+                    passwordcheck = email_found['password']
+                    # encode the password and check if it matches
+                    if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
+                        session["email"] = email_val
+                        user_obj = User(username=email_found['email'], role=email_found['role'], id=email_found['_id'])
+                        login_user(user_obj)
+                        # get date_joined.
+                        date = datetime.now()
+                        last_login = Userdb.update_one({"email": str(email_val)}, {
+                                                    "$set": {"last_login": date}})
+                        return redirect(url_for('home'))
+                    else:
+                        if current_user.is_authenticated:
+                            return redirect(url_for("home"))
+                        message = 'Wrong password'
+                        return render_template('Access/login.html', message=message)
                 else:
-                    if current_user.is_authenticated:
-                        return redirect(url_for("home"))
-                    message = 'Wrong password'
-                    return render_template('Access/login.html', message=message)
+                    message = 'Email not found'
             else:
-                message = 'Email not found'
+                message = 'Aún no se autoriza su cuenta'
         else:
-            message = 'Aún no se autoriza su cuenta'
+                message = 'El correo no es válido'
             
         return render_template('Access/login.html', message=message)
     return render_template('Access/login.html', message=message)
@@ -350,34 +381,28 @@ def profile_user():
             message = 'NO realizo ningun cambio'
             return render_template('User/profile.html', users = user_found, message=message)
 
-        else:
-
-            if newusername == "":
-                message = 'Nombre vacio '
-                return render_template('User/profile.html', users=user_found , message=message)
-
-            if newlastname == "":
-                message = 'Apellido vacio'
-                return render_template('User/profile.html', users=user_found , message=message)
-
-            if newemail == "":
-                message = 'Correo vacio'
-                return render_template('User/profile.html', users=user_found, message=message)
-            
-            else:
-
-                email_found = Userdb.find_one({"email": email})
-                id = email_found['_id']
-
-                if email_found:
-                    Userdb.update_one({'_id':ObjectId(id)}, {"$set": {'first_name': newusername, 'last_name': newlastname,'email': newemail}})
-
-                    message = 'Perfil Actualizado'
-                    return render_template('User/profile.html',users= user_found,  message=message)
-                    
-                else:
-                    return redirect(url_for("index"))
         
+        if newusername == "" or newlastname == "" or newemail == "" :
+            message = 'Ninguno de los campos debe estar vacio'
+            return render_template('User/profile.html', users=user_found, message=message)
+        
+        if "@" in newemail and "." in newemail:
+
+            email_found = Userdb.find_one({"email": email})
+            id = email_found['_id']
+
+            if email_found:
+                Userdb.update_one({'_id':ObjectId(id)}, {"$set": {'first_name': newusername, 'last_name': newlastname,'email': newemail}})
+
+                message = 'Perfil Actualizado'
+                return render_template('User/profile.html',users= user_found,  message=message)
+                    
+            else:
+                return redirect(url_for("index"))
+        else:
+            message = 'El email no es correcto'
+
+        return render_template('User/profile.html', users=user_found, message=message)
 
     return render_template('User/profile.html', users = user_found )
 
@@ -391,28 +416,53 @@ def profile_user():
 def password_user():
 
     email = session["email"]
-    email_found = Userdb.find({"email": email})
+    email_found = Userdb.find_one({"email": email})
 
     if request.method == "POST":
         oldpass = request.form.get("oldpass")
         newpass = request.form.get("newpass")
         repetpass = request.form.get("repetpass")
 
+
         passwordcheck = email_found['password']
 
-        if bcrypt.checkpw(oldpass.encode('utf-8'), passwordcheck):
-            email_found = Userdb.find_one({"email": email})
-            id = email_found['_id']
-            hashed = bcrypt.hashpw(repetpass.encode('utf-8'), bcrypt.gensalt())
-            Userdb.update_one({'_id':ObjectId(id)}, {"$set": {'password': hashed}})
-            message = 'Contraseña Actualizada'
+        if oldpass == "" and newpass == "" and repetpass == "":
+            message = 'Todos los campos estan vacios'
             return render_template('User/password.html', message=message)
 
-        else:
-            message = 'No coincide tu contraseña anterior'
+        if oldpass == "" or newpass == "" or repetpass == "":
+            message = 'Ninguno de los campos debe estar vacio'
+            return render_template('User/password.html', message=message)
+
+        if newpass != repetpass:
+            message = 'Las contraseñas no coinciden'
             return render_template('User/password.html', message=message)
         
-    return render_template('User/password.html', users = email_found )
+    
+        if  validar_pass(newpass) == False: 
+            message = 'La contraseña no es segura: Min 8 Caracteres, una letra mayusculas y un número y un caracter especial '
+            return render_template('User/password.html', message=message)
+
+
+        else:
+
+            if bcrypt.checkpw(oldpass.encode('utf-8'), passwordcheck):
+                if(newpass != "" or repetpass != ""):
+                    email_found = Userdb.find_one({"email": email})
+                    id = email_found['_id']
+                    hashed = bcrypt.hashpw(repetpass.encode('utf-8'), bcrypt.gensalt())
+                    Userdb.update_one({'_id':ObjectId(id)}, {"$set": {'password': hashed}})
+                    message = 'Contraseña Actualizada'
+                    return render_template('User/password.html', message=message)
+                else:
+                    message = 'La nueva contraseña esta vacia'
+                return render_template('User/password.html', message=message)
+
+            else:
+                message = 'No coincide tu contraseña anterior'
+                return render_template('User/password.html', message=message)
+        
+    return render_template('User/password.html')
 
 
 
