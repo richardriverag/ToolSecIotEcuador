@@ -358,11 +358,11 @@ def profile_user():
 
             if newlastname == "":
                 message = 'Apellido vacio'
-                return render_template('User/profile.html',users=user_found , message=message)
+                return render_template('User/profile.html', users=user_found , message=message)
 
             if newemail == "":
                 message = 'Correo vacio'
-                return render_template('User/profile.html',users=user_found, message=message)
+                return render_template('User/profile.html', users=user_found, message=message)
             
             else:
 
