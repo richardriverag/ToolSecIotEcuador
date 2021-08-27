@@ -49,13 +49,13 @@ def register():
         user_found = Userdb.find_one({"name": username})
         email_found = Userdb.find_one({"email": email})
         if user_found:
-            message = 'There already is a user by that name'
+            message = 'Ya existe un usuario con ese nombre'
             return render_template('Access/register.html', message=message)
         if email_found:
-            message = 'This email already exists in database'
+            message = 'Ya existe un usuario con el mismo email'
             return render_template('Access/register.html', message=message)
         if password1 != password2:
-            message = 'Passwords should match!'
+            message = 'Las contraseñas no coinciden'
             return render_template('Access/register.html', message=message)
         else:
             # hash the password and encode it
@@ -86,7 +86,7 @@ def register():
 # ingresar
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    message = 'Please login to your account'
+    message = ''
     if "email" in session:
         return redirect(url_for("home"))
 
@@ -112,10 +112,10 @@ def login():
             else:
                 if "email" in session:
                     return redirect(url_for("home"))
-                message = 'Wrong password'
+                message = 'Contraseña incorrecta'
                 return render_template('Access/login.html', message=message)
         else:
-            message = 'Email not found'
+            message = 'Email no encontrado'
 
             return render_template('Access/login.html', message=message)
     return render_template('Access/login.html', message=message)
@@ -280,3 +280,10 @@ def datacity(capitalize):
     return port_Info
 
 varGeoCity = datacity
+
+def index():
+
+    data = {"labels": ['a', 'b', 'c', 'd'],
+            "data_1": [1, 2, 3, 4], 
+            "data_2": [5, 6, 7, 8]}
+    return render_template('dashboard/home.html', data=data)

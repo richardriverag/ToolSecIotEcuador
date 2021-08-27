@@ -59,13 +59,18 @@
   }
   
   body {
-    font-family: 'open sans';
+    /*font-family: 'open sans';
     background: linear-gradient(rgba(47, 23, 15, 0.76), rgba(47, 23, 15, 0.685)), url("../img/iot.jpg");
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
     object-fit: cover;
-    padding-top: 50px;
+    padding-top: 50px;*/
+    background: #0F2027;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
   }
   
   .contenedor {
@@ -74,6 +79,7 @@
     max-width: 1000px;
     margin: auto;
     overflow: hidden;
+    
   }
   
   .titulo {
@@ -93,7 +99,7 @@
   
   nav{
       text-align: center;
-      background-color: var(--color-info-700);
+      background-color:a rgba(0, 0, 0, 0.1);
       color: var(--color-info-100);
       border: 50px;
       padding-bottom: 150px;
@@ -184,7 +190,8 @@
   
   
   .portafolio{
-    background-color: var(--color-info-700);
+    /*background-color: var(--color-info-700);*/
+    background-color: rgba(0, 0, 0, 0.1);
   }
   
   .galeria-port{
@@ -249,7 +256,7 @@
   }
   
   .cards .card{
-    background: var(--color-info-700);
+    background-color: rgba(0, 0, 0, 0.1);
     display: flex;
     width: 46%;
     height: 200px;
@@ -283,7 +290,7 @@
   /*  Our servicios */
   
   .about-services{
-    background: var(--color-info-700);
+    background-color: rgba(0, 0, 0, 0.1);
     padding-bottom: 30px;
   }
   
@@ -315,7 +322,7 @@
   /*footer*/
   
   footer{
-    background:rgba(0, 0, 0, .5);
+    background:rgba(0, 0, 0, 0.1);
     padding: 60px 0 30px 0;
     margin: auto;
     overflow: hidden;
@@ -518,4 +525,12 @@
           font-size: 20px;
       }
   }
- 
+
+.alerta{
+background-color: red;
+text-align: center;
+margin: 0 auto;
+font-family: Verdana, Geneva, Tahoma, sans-serif;
+font-size: 20px;
+height: 60px;
+}
