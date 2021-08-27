@@ -1,4 +1,5 @@
 from pymongo import MongoClient  # Conexión a la base de datos.
+import re
 
 def getDevice_db():
     client = 'client'
@@ -69,3 +70,14 @@ def datacity(capitalize):
 
     return port_Info
 
+
+##Contraseña
+
+def validar_password(password):
+    if 8 <= len(password) <=16:
+        if re.search('[a-z]', password) and re.search('[A-Z]', password):
+            if re.search('[0-9]', password):
+                if re.search('[$@#]', password):
+                    return True
+
+    return False
