@@ -1,0 +1,43 @@
+{% extends "Access/base.html" %}
+{% block content %}
+
+{% if message  %}
+    <div class="alert alert-secondary" role="alert">
+        <p>{{ message }}</p>
+    </div>
+{% endif %}
+
+
+<form action="" method="post" class="registro">
+ <h1>Perfil</h1>
+ 
+ <div class="contenedor">
+
+    {% for user in users %}
+  <div class="input-contenedor">
+        
+    <i class="fas fa-user icon"></i>
+    <input name="name" class="form-control"  value={{user.first_name}} id="inputFullName" aria-describedby="emailHelp" placeholder="Ingrese sus nombres completos">
+    
+</div>
+
+<div class="input-contenedor">
+    
+<i class="fas fa-user icon"></i>
+<input name="lastname" class="form-control"  value={{user.last_name}} id="inputFullName" aria-describedby="emailHelp" placeholder="Ingrese sus apellidos completos">
+
+</div>
+
+<div class="input-contenedor">
+    
+    <i class="fas fa-envelope-square icon"></i>
+    <input name="email" class="form-control"  value={{user.email}} id="InputEmail"  placeholder="Ingrese un email">
+    
+</div>
+{% endfor %}
+
+<button type="submit" class="btn btn-primary">Actualizar</button>
+
+</form>
+
+{% endblock %}

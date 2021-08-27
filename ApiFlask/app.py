@@ -1,8 +1,10 @@
 import os
+import re
 from flask import Flask, render_template, request, url_for, redirect, session
 import bcrypt 
 from datetime import datetime
 from bson.objectid import ObjectId
+from pymongo import message
 from filtros import getDevice_db, getClient_db, datainfo, datacity
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from functools import wraps
@@ -155,7 +157,7 @@ def register():
 @app.route("/login", methods=["POST", "GET"])
 def login():
 
-    message = 'Please login to your account'
+    message = ''
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
@@ -296,9 +298,8 @@ def admin_panel():
         email = session["email"]
 
         # Obtener información de usuario 
-        user_found = Userdb.find()
+        user_found = Userdb.find({'role': "user"})
 
-        
         return render_template('Admin/admin_panel.html', userslist = user_found)
     return render_template('Access/index.html')
 
@@ -308,7 +309,6 @@ def get_user(id):
     if current_user.is_authenticated:
         user_info = Userdb.find_one({'_id': ObjectId(id)})
         estado = user_info['is_active']
-        print("+++++++++++++++++++++++++", estado)
         if estado == False:
             is_active = Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': True}})
         else:
@@ -322,12 +322,97 @@ def get_user(id):
 
 
 # Actulizar InfoUser
-@app.route("/setting", methods=['POST', 'GET'])
+@app.route("/profile", methods=['POST', 'GET'])
 @login_required
 @roles_required('user', 'admin')
-def user():
-    return render_template('user/setting.html')
+def profile_user():
+  
+    email = session["email"]
+    user_found = Userdb.find({"email": email})
 
+
+    if request.method == "POST":
+        newusername = request.form.get("name")
+        newlastname = request.form.get("lastname")
+        newemail = request.form.get("email")
+
+
+        if newusername == "" and newlastname == "" and newemail == "":
+            message = 'Todos los campos estan vacios'
+            return render_template('User/profile.html', users = user_found, message=message)
+        
+        email_found = Userdb.find_one({"email": email})
+        name = email_found['first_name']
+        lastname = email_found['last_name']
+        email = email_found['email']
+
+        if newusername == name and newlastname == lastname and newemail == email:
+            message = 'NO realizo ningun cambio'
+            return render_template('User/profile.html', users = user_found, message=message)
+
+        else:
+
+            if newusername == "":
+                message = 'Nombre vacio '
+                return render_template('User/profile.html', users=user_found , message=message)
+
+            if newlastname == "":
+                message = 'Apellido vacio'
+                return render_template('User/profile.html',users=user_found , message=message)
+
+            if newemail == "":
+                message = 'Correo vacio'
+                return render_template('User/profile.html',users=user_found, message=message)
+            
+            else:
+
+                email_found = Userdb.find_one({"email": email})
+                id = email_found['_id']
+
+                if email_found:
+                    Userdb.update_one({'_id':ObjectId(id)}, {"$set": {'first_name': newusername, 'last_name': newlastname,'email': newemail}})
+
+                    message = 'Perfil Actualizado'
+                    return render_template('User/profile.html',users= user_found,  message=message)
+                    
+                else:
+                    return redirect(url_for("index"))
+        
+
+    return render_template('User/profile.html', users = user_found )
+
+            
+
+
+# Actulizar Contraseña
+@app.route("/password", methods=['POST', 'GET'])
+@login_required
+@roles_required('user', 'admin')
+def password_user():
+
+    email = session["email"]
+    email_found = Userdb.find({"email": email})
+
+    if request.method == "POST":
+        oldpass = request.form.get("oldpass")
+        newpass = request.form.get("newpass")
+        repetpass = request.form.get("repetpass")
+
+        passwordcheck = email_found['password']
+
+        if bcrypt.checkpw(oldpass.encode('utf-8'), passwordcheck):
+            email_found = Userdb.find_one({"email": email})
+            id = email_found['_id']
+            hashed = bcrypt.hashpw(repetpass.encode('utf-8'), bcrypt.gensalt())
+            Userdb.update_one({'_id':ObjectId(id)}, {"$set": {'password': hashed}})
+            message = 'Contraseña Actualizada'
+            return render_template('User/password.html', message=message)
+
+        else:
+            message = 'No coincide tu contraseña anterior'
+            return render_template('User/password.html', message=message)
+        
+    return render_template('User/password.html', users = email_found )
 
 
 
