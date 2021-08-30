@@ -76,16 +76,16 @@ def roles_required(*role_names):
         @wraps(original_route)
         def decorated_route(*args, **kwargs):
             if not current_user.is_authenticated:
-                print('The user is not authenticated.')
+                #print('The user is not authenticated.')
                 return redirect(url_for('login'))
             
-            print(current_user.role)
-            print(role_names)
+            #print(current_user.role)
+            #print(role_names)
             if not current_user.role in role_names:
-                print('The user does not have this role.')
+                #print('The user does not have this role.')
                 return redirect(url_for('login'))
             else:
-                print('The user is in this role.')
+                #print('The user is in this role.')
                 return original_route(*args, **kwargs)
         return decorated_route
     return decorator
@@ -261,6 +261,8 @@ def home():
 
 # busqueda por dirección Ipv4 Estado:True
 @app.route('/dashboard/ipv4/<id>', methods=['GET'])
+@login_required
+@roles_required('user', 'admin')
 def get_ipv4(id):
     if current_user.is_authenticated:
         todo_Ipv4 = Devicesdb.find({'_id': ObjectId(id)})
@@ -277,46 +279,49 @@ def filter_info():
     filter = request.form.get('filter')
     parameter = request.form.get('parameter')
 
-    # Busqueda por dirección IPv4
-    if(str(parameter) == "Dirección"):
-            # filtro
-        todo_filter = Devicesdb.find({'Direccion': filter})
-        cantidad = todo_filter.count()
-        data = varIpv4(cantidad, filter)
+    if current_user.is_authenticated:
 
-        return render_template('dashboard/home.html', filters=todo_filter,datos = data) 
+        # Busqueda por dirección IPv4
+        if(str(parameter) == "Dirección"):
+                # filtro
+            todo_filter = Devicesdb.find({'Direccion': filter})
+            cantidad = todo_filter.count()
+            data = varIpv4(cantidad, filter)
 
-
-    # Busqueda por dirección Puerto
-    if(str(parameter) == "Puerto"):
-
-        todo_filter = Devicesdb.find({'puerto.Puerto': filter})
-        cantidad = todo_filter.count()
-        data = varIpv4(cantidad, filter)
-
-        return render_template('dashboard/home.html', filters=todo_filter,datos=data)
+            return render_template('dashboard/home.html', filters=todo_filter,datos = data) 
 
 
-    #Busqueda por Cuidad
-    if(str(parameter) == "Cuidad"):
-        #Hacer que la primera letra sea Mayúscula
-        capitalize = filter.capitalize()
-        #Filtro por cuidad
-        todo_filter = Devicesdb.find({'Localizacion.city': capitalize, 'Estado': True})
-        cantidad = todo_filter.count()
+        # Busqueda por dirección Puerto
+        if(str(parameter) == "Puerto"):
 
-        cityPort = varGeoCity(capitalize)
+            todo_filter = Devicesdb.find({'puerto.Puerto': filter})
+            cantidad = todo_filter.count()
+            data = varIpv4(cantidad, filter)
 
-        # Contenedor de información 
-        data = varIpv4(cantidad, filter)
+            return render_template('dashboard/home.html', filters=todo_filter, datos=data)
 
-        return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data)
+
+        #Busqueda por Cuidad
+        if(str(parameter) == "Cuidad"):
+            #Hacer que la primera letra sea Mayúscula
+            capitalize = filter.capitalize()
+            #Filtro por cuidad
+            todo_filter = Devicesdb.find({'Localizacion.city': capitalize, 'Estado': True})
+            cantidad = todo_filter.count()
+
+            cityPort = varGeoCity(capitalize)
+
+            # Contenedor de información 
+            data = varIpv4(cantidad, filter)
+
+            return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data)
+
+        else:
+            msg = "Ups! algo salio mal :("
+            return redirect(url_for('home'))
 
     else:
-        msg = "Ups! algo salio mal :("
-
         return redirect(url_for('home'))
-
 
 #Admin Panel
 
@@ -336,6 +341,8 @@ def admin_panel():
 
 # busqueda por dirección Ipv4 Estado:True
 @app.route('/admin_panel/<id>', methods=['GET'])
+@login_required
+@roles_required('admin')
 def get_user(id):
     if current_user.is_authenticated:
         user_info = Userdb.find_one({'_id': ObjectId(id)})
