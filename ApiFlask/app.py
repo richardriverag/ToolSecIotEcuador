@@ -1,13 +1,16 @@
+import email
 import os
 import re
 from flask import Flask, render_template, request, url_for, redirect, session
 import bcrypt 
-from datetime import datetime
+from datetime import date, datetime
 from bson.objectid import ObjectId
 from pymongo import message
 from filtros import getDevice_db, getClient_db, datainfo, datacity, validar_password
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from functools import wraps
+from flask_mail import Mail, Message
+
 
 
 app = Flask(__name__)
@@ -15,7 +18,18 @@ app = Flask(__name__)
 key = os.urandom(24)
 app.secret_key = key
 
+mail_settigns = {
+        "MAIL_SERVER": 'smtp.gmail.com',
+        "MAIL_PORT": 465,
+        "MAIL_USE_SSL": True,
+        "MAIL_USE_TLS": False,
+        "MAIL_USERNAME": 'iotecuador2021@gmail.com',
+        "MAIL_PASSWORD": 'HU#qf^OP8mwV',
+        "MAIL_DEFAULT_SENDER": 'iotecuador2021@gmail.com'
+}
 
+app.config.update(mail_settigns)
+mail = Mail(app)
 
 #Device client
 Devicesdb = getDevice_db()
@@ -103,9 +117,12 @@ def index():
 @app.route("/register", methods=['POST', 'GET'])
 def register():
     message = ''
+    
     # if method post in index
     if current_user.is_authenticated:
-        return redirect(url_for("home"))
+        message = 'Revise su correo en Span'
+        return render_template('Access/login.html', message=message)
+
     if request.method == "POST":
         username = request.form.get("name")
         lastname = request.form.get("lastname")
@@ -155,11 +172,11 @@ def register():
             Userdb.insert_one(user_input)
 
             # find the new created account and its email
-            user_data = Userdb.find_one({"email": email})
-            email_val= user_data['email']
-            info_user = user_data['username']
+            #user_data = Userdb.find_one({"email": email})
+            #email_val= user_data['email']
 
-            return redirect(url_for('home'))
+            message = 'En un máximo de 48 horas se enviara una respuesta a su correo:', email
+            return render_template('Access/login.html', message=message)
         else:
             message = 'El email no es correcto'
     
@@ -317,8 +334,8 @@ def filter_info():
             return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data)
 
         else:
-            msg = "Ups! algo salio mal :("
-            return redirect(url_for('home'))
+            message = "Ups! algo salio mal :("
+            return render_template(url_for('home', message))
 
     else:
         return redirect(url_for('home'))
@@ -344,15 +361,51 @@ def admin_panel():
 @login_required
 @roles_required('admin')
 def get_user(id):
+    message = ''
     if current_user.is_authenticated:
-        user_info = Userdb.find_one({'_id': ObjectId(id)})
-        estado = user_info['is_active']
-        if estado == False:
-            is_active = Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': True}})
-        else:
-            is_active = Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': False}})
 
-        return redirect(url_for('admin_panel'))
+        user_info = Userdb.find_one({'_id': ObjectId(id)})
+
+        estado = user_info['is_active']
+        email = user_info['email']
+        name = user_info['first_name']
+        last_name = user_info['last_name']
+        user = [{
+            'Name': name,
+            'Last_name':last_name,
+        }]
+        
+        if estado == False:
+            Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': True}})
+            msg = Message(subject="Cuenta Activada!", recipients=[str(email)])
+            msg.html = render_template('Mail/active_account.html', users=user)
+            mail.send(msg)
+
+            msg = Message(
+                subject = '',
+                recipients = [],
+                body = '',
+                html = '',
+                sender = '',
+                cc = [],
+                bcc = [],
+                attachments = [],
+                reply_to = [],
+                date = 'date',
+                charset='',
+                extra_headers={'':''},
+                mail_options=[],
+                rcpt_options=[]
+
+            )
+
+            message = 'Se ha enviado un correo a ', email
+            return redirect(url_for("admin_panel"))
+
+        else:
+            Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': False}})
+            return redirect(url_for("admin_panel"))
+
     else:
         return redirect(url_for('login'))
 
