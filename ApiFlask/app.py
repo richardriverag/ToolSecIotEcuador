@@ -378,8 +378,7 @@ def get_user(id):
         if estado == False:
             Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': True}})
             msg = Message(subject="Cuenta Activada!", recipients=[str(email)])
-            #msg.html = render_template('Admin/mail.html', users=user)
-            msg.html = '<b>Hola! ya puedes usar la app</b>'
+            msg.html = render_template('Mail/active_account.html', users=user)
             mail.send(msg)
 
             msg = Message(
