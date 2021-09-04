@@ -20,15 +20,18 @@
             // Create the chart
             Highcharts.mapChart('container', {
                 chart: {
-                    map: 'countries/ec/ec-all'
+                    map: 'countries/ec/ec-all',
+                    borderColor: '#08338F',
+                    borderRadius: 10,
+                    borderWidth: 2
                 },
 
                 title: {
-                    text: 'Iot Ecuador'
+                    text: 'Iot Ecuador',
                 },
 
                 subtitle: {
-                    text: '<a>Estado de Ecuador</a>'
+                    text: '<b>Estado de Ecuador</b>'
                 },
 
                 mapNavigation: {
@@ -39,16 +42,16 @@
                 },
 
                 colorAxis: {
-                    min: 0
+                    min: 0,
+                    minColor: "#B7D4EB",
+                    maxColor: "#08338F"
                 },
 
                 series: [{
                     data: data,
                     name: 'Direcciones con puertos activos',
                     states: {
-                        hover: {
-                            color: '#BADA55'
-                        }
+                        
                     },
                     dataLabels: {
                         enabled: true,
@@ -61,8 +64,8 @@
                     data: Highcharts.geojson(Highcharts.maps['countries/ec/ec-all'], 'mapline'),
                     color: 'silver',
                     nullColor: 'silver',
-                    showInLegend: false,
-                    enableMouseTracking: false
+                    showInLegend: true,
+                    enableMouseTracking: true
                     
                 }]
             });
