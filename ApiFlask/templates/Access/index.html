@@ -6,18 +6,76 @@
 <main>
   <section class="contenedor sobre-iot">
     <h2 class="titulo">Internet of things</h2>
-    <div class="contenedor-sobre-iot">
-        <img src="static/img/iot2.jpg" alt="" class="imagen-about-iot">
-        <div class="contenido-textos">
-            <h3> Qué es Iot?</h3>
-            <p>La primera «cosa» conectada al Internet se creó en 1982: fue una máquina de refrescos en la Universidad Carnegie Mellon en Pittsburgh,
-               Pensilvania, que informaba el número y la temperatura de las bebidas que contenía. Era único en aquel entonces, pero en algún momento 
-               en 2008 o 2009, la cantidad de cosas conectadas a Internet superó la población humana mundial por primera vez en la historia.</p>
-        </div>
+    
+    <div class="contenedor-sobre-iot " id="container">
+        
+    <script >
+            
+            // Prepare demo data
+            // Data is joined to map using value of 'hc-key' property by default.
+            // See API docs for 'joinBy' for more info on linking data and map.
+           
+            var data = {{capilalizes | safe }}
+
+            // Create the chart
+            Highcharts.mapChart('container', {
+                chart: {
+                    map: 'countries/ec/ec-all'
+                },
+
+                title: {
+                    text: 'Iot Ecuador'
+                },
+
+                subtitle: {
+                    text: '<a>Estado de Ecuador</a>'
+                },
+
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+
+                colorAxis: {
+                    min: 0
+                },
+
+                series: [{
+                    data: data,
+                    name: 'Direcciones con puertos activos',
+                    states: {
+                        hover: {
+                            color: '#BADA55'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    }
+                    
+                }, {
+                    name: 'Separators',
+                    type: 'mapline',
+                    data: Highcharts.geojson(Highcharts.maps['countries/ec/ec-all'], 'mapline'),
+                    color: 'silver',
+                    nullColor: 'silver',
+                    showInLegend: false,
+                    enableMouseTracking: false
+                    
+                }]
+            });
+
+        </script>
+
     </div>
+    
 </section>
 </main>
 
+
+  
 
 
 <section class="portafolio">
