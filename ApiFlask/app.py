@@ -76,16 +76,16 @@ def roles_required(*role_names):
         @wraps(original_route)
         def decorated_route(*args, **kwargs):
             if not current_user.is_authenticated:
-                print('The user is not authenticated.')
+                print('Usuario no autenticado')
                 return redirect(url_for('login'))
             
             print(current_user.role)
             print(role_names)
             if not current_user.role in role_names:
-                print('The user does not have this role.')
+                print('El usuario no tiene rol')
                 return redirect(url_for('login'))
             else:
-                print('The user is in this role.')
+                print('Usuario pertenece a este rol')
                 return original_route(*args, **kwargs)
         return decorated_route
     return decorator
@@ -212,10 +212,10 @@ def login():
                     else:
                         if current_user.is_authenticated:
                             return redirect(url_for("home"))
-                        message = 'Wrong password'
+                        message = 'Contraseña incorrecta'
                         return render_template('Access/login.html', message=message)
                 else:
-                    message = 'Email not found'
+                    message = 'Email no encontrado'
             else:
                 message = 'Aún no se autoriza su cuenta'
         else:
@@ -247,7 +247,7 @@ def home():
         info_user = user_found['username']
 
         # Listar 10 direcciones "Estado":True
-        Ipv4True = Devicesdb.find({'Estado': True}).limit(10)
+        Ipv4True = Devicesdb.find({'Estado': True})
         cantidad = Ipv4True.count()
         
         # Listar todas la direcciones IPv4 Analizadas
@@ -309,6 +309,12 @@ def filter_info():
 
         # Contenedor de información 
         data = varIpv4(cantidad, filter)
+        print('Hello world!', cityPort)
+        #puerto = data.map()
+        
+    
+      #var country = data.map(function(d) {return d.province;});
+      #var value = data.map(function(d) {return d.cumulative_cases;});
 
         return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data)
 
@@ -318,6 +324,8 @@ def filter_info():
         return redirect(url_for('home'))
 
 
+    return render_template('dashboard/home.html')
+    
 #Admin Panel
 
 # inciar
@@ -472,9 +480,9 @@ def password_user():
 def blog():
     return render_template('dashboard/blog.html')
 
-@app.route("/rango_direcciones", methods=['GET'])
+@app.route("/not_found", methods=['GET'])
 @login_required
 @roles_required('user', 'admin')
 def rango():
-    return render_template('dashboard/direcciones.html')
+    return render_template('dashboard/error.html')
 

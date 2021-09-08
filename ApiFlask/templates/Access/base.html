@@ -10,14 +10,22 @@
     <link href="static/css/autenticar.css" rel="stylesheet">
     <link href="static/css/tabla.css" rel="stylesheet">
     <link href="static/css/blog.css" rel="stylesheet">
+    <link href="static/css/card.css" rel="stylesheet">
+    <link href="static/css/estadistica.css" rel="stylesheet">
+    
+   
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-    <script src="https://kit.fontawesome.com/9fe26e1c40.js" crossorigin="anonymous"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
     <!-- import plugin script -->
-  <script src='static/Chart.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
 </head>
 
-<body>
+
   <!-- Navbar -->
 
   <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
@@ -72,11 +80,8 @@
        </div>
      </div>
    </nav>
- </header>
- <body>
-   
- 
-</body>
+
+
      <!-- Contenido que cambiara  -->
      {%block content%}
      {% endblock %}
@@ -104,7 +109,11 @@
      <!-- Bootstrap -->
      <script src="static/vendor/jquery/jquery.min.js"></script>
      <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+     <script type="src=notificacion.js"></script>
       
+   
+     
+     
  </body>
 
 

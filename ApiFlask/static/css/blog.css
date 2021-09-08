@@ -4,20 +4,24 @@
     box-sizing: border-box;
 }
 
-.post-list{
+.carousel{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+article{
     display: flex;
-    min-height: 100hv;
     align-items: center;
     justify-content: center;
-    padding: 3px 15p;
+    padding-right: 5px;
+    margin: 10px;
+    width: 2000px;
+
 }
 
 .content{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-    max-width: 1000px;
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 .post-img-1{
     background: url("https://branch.com.co/wp-content/uploads/2021/05/estadisticas-de-la-situacion-digital-de-ecuador-2020-2021-31.png");
@@ -29,7 +33,7 @@
 }
 
 .post-img-2{
-    background: url("https://branch.com.co/wp-content/uploads/2021/05/estadisticas-de-la-situacion-digital-de-ecuador-2020-2021-31.png");
+    background: url("https://branch.com.co/wp-content/uploads/2021/05/estadisticas-de-la-situacion-digital-de-ecuador-2020-2021-01.png");
     width: 100%;
     height: 200px;
     background-size: cover;
@@ -38,7 +42,7 @@
 }
 
 .post-img-3{
-    background: url("https://branch.com.co/wp-content/uploads/2021/05/estadisticas-de-la-situacion-digital-de-ecuador-2020-2021-31.png");
+    background: url("https://branch.com.co/wp-content/uploads/2021/05/estadisticas-de-la-situacion-digital-de-ecuador-2020-2021-33.png");
     width: 100%;
     height: 200px;
     background-size: cover;
@@ -48,7 +52,8 @@
 .post{
     box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 1);
     transition: .2s;
-
+    width: 350px;
+    
 }
 .post:hover{
     transform: translate(-4px);
@@ -70,19 +75,13 @@
     padding: 15px;
     text-align: center;
 }
-
-.post-body span{
-    display: inline-block;
-    color: #999;
-    margin-bottom: 10px;
-}
-
 .post-body h2{
     margin-bottom: 15px;
 }
 .post-body p{
     line-height: 1.5;
     margin-bottom: 20px;
+    text-align: left;
 }
 
 @media (max-width: 840px){
@@ -97,4 +96,36 @@
         grid-template-columns: repeat(1, 1fr);
     }
 }
+.caja-1{
+    background-image: url('https://en.ipshu.com/picture/190.110.222.png');
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    transition: .2s;
+}
 
+.caja-2{
+    background-image: url('https://i.blogs.es/f83df6/dispositivos-conectados/1366_2000.jpg');
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    transition: .2s;
+}
+.post-body a{
+    background-color: rgb(61, 61, 110);
+    color: white;
+    padding: 15px 20px;
+    display: block;
+    text-align: center;
+    margin: 20px 50px;
+    text-decoration: none;
+}
+.post-body:hover{
+    background-color: rgba(78, 82, 126, 0.87);
+    color: white;
+    cursor: pointer;
+    transform: scale(1.03);
+    transition: all 1s ease;
+}

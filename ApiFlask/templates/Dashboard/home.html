@@ -1,57 +1,43 @@
 {% extends "Access/base.html" %}{% block content %}
 
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <div class="card-body">
-        <h5 class="card-title">Direcciones IPv4 asignadas para ecuador </h5>
-        <h6># Direcciones IPv4 dentro de territorio Ecuatoriano</p>
-          <li class="lista">2,780,345 </li>
-        <h6># Direcciones IPv4 encontradas: </p>
-          {% for data in datos %}
-          <li class="lista">{{ data.AllIPv4 }}</li>
-          {%endfor%}
-          <a href="https://lite.ip2location.com/ecuador-ip-address-ranges?lang=es" class="btn btn-primary" target="_blank">Ver más >></a>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card-body">
-        <h5 class="card-title">Dispositivos desplegados en Ecuador</h5>
-        <h6 >El número de dispositivos móviles conectados en el país es de 13.82 millones, lo que constituye un 77,8% de la población.</h6>
-        <a href="/blog" class="btn btn-primary">Ver más >></a>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card-body">
-        <h5 class="card-title">Estudio de direcciones IPv4</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Ver más >></a>
-      </div>
-    </div>
-  </div>
-</div>
+<section class="post-list">
+  <div class="content">
+      <article class="post">
+          <div class="post-header">
+              <div class="caja-1">
 
+              </div>
+          </div>
+          <div class="post-body">
+             
+              <h5 class="card-title">Direcciones IPv4 asignadas en el Ecuador</h2>
+              <h6># Direcciones IPv4 dentro de territorio Ecuatoriano</p>
+                <li class="lista">2,780,345 </li>
+              <h6># Direcciones IPv4 encontradas: </p>
+                {% for data in datos %}
+                <li class="lista">{{ data.AllIPv4 }}</li>
+                {%endfor%}
+                <a href="https://lite.ip2location.com/ecuador-ip-address-ranges?lang=es" class="btn btn-primary" target="_blank">Ver más >></a>
+            </div>
+      </article>
 
-<div class="box">
-  <form action="{{ url_for('filter_info') }}" method="POST" role="form">
+      <article class="post">
+        <div class="post-header">
+            <div class="caja-2">
+
+            </div>
+        </div>
+        <div class="post-body">
+            
+          <h5 class="card-title">Dispositivos desplegados en el Ecuador</h5>
+          <h6 >El número de dispositivos móviles conectados en el país es de 13.82 millones, lo que constituye un 77,8% de la población.</h6>
+          <a href="/blog" class="btn btn-primary">Ver más >></a>
+          </div>
+    </article>
+
     
-      <select id="cars" name="parameter">
-        <option value="Dirección">Dirección:</option>
-        <option value="Puerto">Puerto:</option>
-        <option value="Cuidad">Cuidad:</option>
-      </select>
-
-      <input type="text" placeholder="¿Qué deseas buscar?" name="filter" />
-      <input type="submit" name="" value="Search">
-
-  </form>
-</div>
-
-
-  <div class="saludo">
-    <p>Hola! has iniciado sesion {{users}}</p>
   </div>
-
+</section>
 
   {% if msgs %}
   <div class="saludo">
@@ -68,16 +54,47 @@
   <p>{{ error }}</p>
 
 
-<div>
-  <P>Analisis de Puertos</P>
-  <ul>
-    {% for city in cities %}
-    <li>
-      Puerto: {{city.Puerto}} | Cantidad: {{city.Cantidad}}
-    </li>
-    {% endfor %}
-  </ul>
-</div>
+
+<canvas id="myChart" min-width="400" min-height="400"></canvas>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [{% for city in cities %} {{ city.Puerto}}, {% endfor %}],
+        datasets: [{
+            label: '# Puertos',
+            data: [{% for city in cities %} {{city.Cantidad}}, {% endfor %}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+ 
+
 
 
 <div class="container-fluid" id="main-container">
@@ -89,16 +106,29 @@
           {% for data in datos %}
           <p class="category">Se ha encontrado : {{ data.PuertoTrue }} Direcciones</p>
           {% endfor %}
+          <div class="box">
+            <form action="{{ url_for('filter_info') }}" method="POST" role="form">
+              
+                <select id="cars" name="parameter">
+                  <option value="Dirección">Dirección:</option>
+                  <option value="Puerto">Puerto:</option>
+                  <option value="Cuidad">Cuidad:</option>
+                </select>
+          
+                <input type="text" placeholder="¿Qué deseas buscar?" name="filter" />
+                <input type="submit" name="" value="Search">
+          
+            </form>
+          </div>
 
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table >
+          <div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+            <table class="table table-bordered table-striped mb-0">
               <thead>
                 <tr>
                   <th>Dirección</th>
                   <th>Cuidad</th>
-                  <th>Fecha</th>
+                  <th style="width: 150px;">Fecha</th>
                   <th>Puertos</th>
                 </tr>
               </thead>
@@ -107,7 +137,7 @@
                 <tr>
                   <td>
                     
-
+          
                     {%if filter.Estado ==  False%}
                     {{ filter.Direccion }}
                     {% else %}
@@ -116,14 +146,14 @@
                     </a>
                     {% endif %}
                   </td>
-
+          
                   <td>
                     
                     {{ filter.Localizacion.city }}
                     
                 </td>
-                  <td>{{ filter.Fecha }}</td>
-
+                  <td style="width: 150px;">{{ filter.Fecha }}</td>
+          
                   <td>
                     {%if filter.Estado ==  False%}
                       No hay Puertos
@@ -132,17 +162,18 @@
                     {{x.Puerto}} 
                     {% endfor %}
                     {% endif %}
-
+          
                   </td>
                 </tr>
               </tbody>
               {% endfor %}
             </table>
+          
           </div>
-        </div>
       </div>
     </div>
   </div>
+</div>
 </div>
 {% endif %}
 
