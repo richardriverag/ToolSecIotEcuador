@@ -6,7 +6,7 @@ import bcrypt
 from datetime import date, datetime
 from bson.objectid import ObjectId
 from pymongo import message
-from filtros import getDevice_db, getClient_db, datainfo, datacity, validar_password
+from filtros import getDevice_db, getClient_db, datainfo, datacity, validar_password, map
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from functools import wraps
 from flask_mail import Mail, Message
@@ -45,6 +45,9 @@ varGeoCity = datacity
 
 #Validar Pass
 validar_pass = validar_password
+
+#Map
+mapEcuador = map()
 
 
 
@@ -110,7 +113,7 @@ def roles_required(*role_names):
 # inciar
 @app.route("/", methods=["POST", "GET"])
 def index():
-    return render_template('Access/index.html')
+    return render_template('Access/index.html', capilalizes=mapEcuador)
 
 
 # registrar
@@ -245,7 +248,7 @@ def login():
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
     logout_user()
-    return render_template('Access/index.html')
+    return redirect(url_for('index'))
 
 
 
@@ -354,7 +357,7 @@ def admin_panel():
         user_found = Userdb.find({'role': "user"})
 
         return render_template('Admin/admin_panel.html', userslist = user_found)
-    return render_template('Access/index.html')
+    return redirect(url_for('index'))
 
 # busqueda por dirección Ipv4 Estado:True
 @app.route('/admin_panel/<id>', methods=['GET'])
