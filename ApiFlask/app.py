@@ -248,7 +248,7 @@ def login():
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
     logout_user()
-    return render_template('Access/index.html')
+    return redirect(url_for('index'))
 
 
 
@@ -357,7 +357,7 @@ def admin_panel():
         user_found = Userdb.find({'role': "user"})
 
         return render_template('Admin/admin_panel.html', userslist = user_found)
-    return render_template('Access/index.html')
+    return redirect(url_for('index'))
 
 # busqueda por dirección Ipv4 Estado:True
 @app.route('/admin_panel/<id>', methods=['GET'])
