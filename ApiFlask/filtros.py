@@ -81,3 +81,40 @@ def validar_password(password):
                     return True
 
     return False
+
+##map
+
+def map():
+    db = getDevice_db()
+    capitalList =['Cuenca', 'Guaranda', 'Azogues', 'Tulcán', 'Riobamba', 'Latacunga', 'Machala', 'Esmeraldas',
+                'Puerto Baquerizo Moreno', 'Guayaquil', 'Ibarra', 'Loja', 'Babahoyo', 'Portoviejo', 'Macas',
+                'Tena', 'Francisco de Orellana', 'Puyo', 'Quito', 'Santa Elena', 'Santo Domingo', 'Nueva Loja',
+                'Ambato', 'Zamora']
+
+    codeCity = ['ec-az','ec-bo', 'ec-cn', 'ec-cr', 'ec-cb', 'ec-ct', 'ec-eo', 'ec-es', 'ec-ga', 'ec-gu', 'ec-im',
+               'ec-lj', 'ec-lr', 'ec-mn', 'ec-ms', 'ec-1076', 'ec-na', 'ec-pa', 'ec-pi', 'ec-se', 'ec-sd', 'ec-su',
+               'ec-tu', 'ec-zc' ]
+
+
+    
+    data = []
+
+
+    for capital in capitalList:
+        capital_filter = db.find({'Localizacion.city': capital, 'Estado': True})
+        quantity = capital_filter.count()
+        addInfo = quantity
+        data.append(addInfo)
+
+    #mostrar datos
+    alldata =[]
+    for contador in range(0, 24):
+        capital = codeCity[contador]
+        cantidad = data[contador]
+        valor = [capital, cantidad]
+        alldata.append(valor)
+
+    return alldata
+
+
+

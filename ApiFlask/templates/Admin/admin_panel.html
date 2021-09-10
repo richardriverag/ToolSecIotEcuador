@@ -3,6 +3,12 @@
 
 <h1 style="color: white;">Panel de administración</h1>
 
+{% if message  %}
+    <div class="alert alert-secondary" role="alert">
+        <p>{{ message }}</p>
+    </div>
+{% endif %}
+
 <div class="container-fluid" id="main-container">
     <div class="row">
       <div class="col-md-12">
