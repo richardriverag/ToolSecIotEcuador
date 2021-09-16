@@ -8,6 +8,7 @@ table{
     text-align: left;
     width: 100%;
     border-collapse: collapse;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     
 }
 
@@ -16,8 +17,8 @@ th, td{
     padding: 20px;
 }
 thead{
-    background-color: #246355;
-    border-bottom: solid 5px #0F362D;
+    background-color: rgb(61, 61, 110);
+    border-bottom: solid 5px  #0a5fcf;
     color: white;
 }
 tr:nth-child(even){
@@ -25,7 +26,7 @@ tr:nth-child(even){
 
 }
 tr:hover td{
-    background-color: #369681;
+    background-color:  #0a5fcf;
     color: white;
 }
 p{
@@ -48,9 +49,11 @@ h5{
 }
 .box{
     position: relative;
-    left: 10%;
-    top: 70%;
+    left: 25%;
+    top: 80%;
     transform: translate(-10%, -30%);
+    padding-bottom: 25px;
+    padding-top: 25px; 
 }
 input{
     position: relative;
@@ -63,7 +66,7 @@ input{
     
     width: 150px;
     height: 50px;
-    background: darkslategrey;
+    background: rgb(61, 61, 110);
     color: white;
     border: none;
     outline: none;
@@ -91,11 +94,11 @@ input[type="submit"]{
     border: none;
     outline: none;
     cursor: pointer;
-    background: darkslategrey;
+    background: rgb(61, 61, 110);
     color: white;
 }
 input[type="submit"]:hover{
-    background: #369681;
+    background: #0a5fcf;
     
 }
 #lista{

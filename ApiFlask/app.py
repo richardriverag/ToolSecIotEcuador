@@ -9,7 +9,7 @@ from pymongo import message
 from filtros import getDevice_db, getClient_db, datainfo, datacity, validar_password, map
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from functools import wraps
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message 
 
 
 
@@ -115,6 +115,11 @@ def roles_required(*role_names):
 def index():
     return render_template('Access/index.html', capilalizes=mapEcuador)
 
+
+#error
+@app.errorhandler(404)
+def page_not_found(err):
+    return render_template('Dashboard/error.html')
 
 # registrar
 @app.route("/register", methods=['POST', 'GET'])
@@ -267,7 +272,7 @@ def home():
         info_user = user_found['username']
 
         # Listar 10 direcciones "Estado":True
-        Ipv4True = Devicesdb.find({'Estado': True}).limit(10)
+        Ipv4True = Devicesdb.find({'Estado': True})
         cantidad = Ipv4True.count()
         
         # Listar todas la direcciones IPv4 Analizadas
@@ -280,16 +285,16 @@ def home():
         return redirect(url_for("login"))
 
 # busqueda por dirección Ipv4 Estado:True
-@app.route('/dashboard/ipv4/<id>', methods=['GET'])
+@app.route('/<ip>', methods=['GET'])
 @login_required
 @roles_required('user', 'admin')
-def get_ipv4(id):
+def get_ipv4(ip):
     if current_user.is_authenticated:
-        todo_Ipv4 = Devicesdb.find({'_id': ObjectId(id)})
+        todo_Ipv4 = Devicesdb.find({'Direccion': str(ip)})
         return render_template('dashboard/busqueda.html', items=todo_Ipv4)
     else:
-        return redirect(url_for('home'))
-
+        return redirect(url_for('home'))   
+    
 
 @app.route('/dashboard', methods=['POST'])
 @login_required
