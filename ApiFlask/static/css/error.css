@@ -67,9 +67,20 @@ body {
     border-color:none; 
     border-bottom:2px solid #ccc;
     }
+a{
+      text-decoration: none;
+      font-size: 12px;
+      line-height: 20px;
+      color: darkgrey;
+    }
+a:hover{
+      color: #fff;
+    }
   /* mobile test * /
   @media (max-width: 647px) { 
     .moon {
       padding-top: -500px;
     }
   }
+
+  

@@ -13,11 +13,12 @@
               <h5 class="card-title">Direcciones IPv4 asignadas en el Ecuador</h2>
               <h6># Direcciones IPv4 dentro de territorio Ecuatoriano</p>
                 <li class="lista">2,780,345 </li>
+                <a href="https://lite.ip2location.com/ecuador-ip-address-ranges?lang=es" class="btn btn-primary" target="_blank">Direcciones IPv4</a>
               <h6># Direcciones IPv4 encontradas: </p>
                 {% for data in datos %}
                 <li class="lista">{{ data.AllIPv4 }}</li>
                 {%endfor%}
-                <a href="https://lite.ip2location.com/ecuador-ip-address-ranges?lang=es" class="btn btn-primary" target="_blank">Ver más >></a>
+                
             </div>
       </article>
 
@@ -31,7 +32,7 @@
             
           <h5 class="card-title">Dispositivos desplegados en el Ecuador</h5>
           <h6 >El número de dispositivos móviles conectados en el país es de 13.82 millones, lo que constituye un 77,8% de la población.</h6>
-          <a href="/blog" class="btn btn-primary">Ver más >></a>
+          <a href="/blog" class="btn btn-primary">Tecnologia 2020-2021EC</a>
           </div>
     </article>
 
@@ -54,7 +55,7 @@
   <p>{{ error }}</p>
 
 
-
+{% if cities %}
 <canvas id="myChart" min-width="400" min-height="400"></canvas>
 <script>
 var ctx = document.getElementById('myChart').getContext('2d');
@@ -93,7 +94,7 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
- 
+ {% endif %}
 
 
 
@@ -102,9 +103,9 @@ var myChart = new Chart(ctx, {
     <div class="col-md-12">
       <div class="card card-plain">
         <div class="card-header">
-          <h4 class="card-title">Lista de Direcciones Ipv4</h4>
+          <h4 class="card-title"><strong>LISTA DE DIRECCIONES IPv4</strong></h4>
           {% for data in datos %}
-          <p class="category">Se ha encontrado : {{ data.PuertoTrue }} Direcciones</p>
+          <p class="category"><strong>Se ha encontrado : {{ data.PuertoTrue }} Direcciones IPv4</strong></p>
           {% endfor %}
           <div class="box">
             <form action="{{ url_for('filter_info') }}" method="POST" role="form">
@@ -141,7 +142,7 @@ var myChart = new Chart(ctx, {
                     {%if filter.Estado ==  False%}
                     {{ filter.Direccion }}
                     {% else %}
-                    <a href="{{ url_for('get_ipv4', id= filter._id)}}">
+                    <a href="{{ url_for('get_ipv4', ip= filter.Direccion)}}">
                       {{ filter.Direccion }}
                     </a>
                     {% endif %}
