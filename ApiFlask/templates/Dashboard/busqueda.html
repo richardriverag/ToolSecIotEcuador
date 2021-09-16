@@ -29,10 +29,18 @@
 			
 
 		  <div class="post-header">
-			  <div class="caja-2">
-  
-			  </div>
+			{% if x.Imagen%}
+			<div>
+				<img src="static/capturas/{{x.Imagen}}" class="img-fluid"/>
+			</div>
+
+			{% else %}
+			<div class="caja-2"></div>
+
 		  </div>
+		  	{% endif %}
+
+
 		  <div class="post-body">
 			  
 			<ul class="list-group list-group-flush">
