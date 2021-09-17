@@ -1,0 +1,53 @@
+191.100.20.14*
+200.93.248.54*#observasio  check
+200.1.112.207*
+200.7.195.124*
+190.15.136.171*
+186.101.190.175#error  check
+45.65.203.167*
+201.183.60.97*
+181.198.87.2*
+201.234.193.196*
+181.175.153.90*#no  check
+186.69.84.180*#no   check no port
+186.66.171.42*#no   check no port
+200.7.200.182*
+179.60.244.238*
+186.69.83.121*
+190.95.145.169*
+190.63.48.50*
+181.196.245.50*
+186.2.161.252*
+190.63.197.114*
+181.198.117.213*
+200.124.244.84*
+181.39.0.132*
+190.152.182.38*#error check
+190.130.128.31*
+190.154.26.138*
+191.99.135.46*
+179.60.244.15
+190.214.47.92*espera check
+181.39.85.109* 
+
+
+
+#video multiprogramacion (hilos - logging)
+
+https://www.youtube.com/watch?v=3Rlh6uUuQqA
+
+#logging
+https://www.youtube.com/watch?v=NVOgXX3ZOtc
+
+#ice cream
+https://towardsdatascience.com/do-not-use-print-for-debugging-in-python-anymore-6767b6f1866d
+
+
+Ips con error de conexón
+200.63.219.141 # problem capture img. 443
+186.3.208.165 puerto:9000
+
+181.211.63.85*
+190.120.76.6*
+201.183.32.236*
+181.198.85.42*
