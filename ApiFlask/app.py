@@ -46,8 +46,7 @@ varGeoCity = datacity
 #Validar Pass
 validar_pass = validar_password
 
-#Map
-mapEcuador = map()
+
 
 
 
@@ -113,6 +112,8 @@ def roles_required(*role_names):
 # inciar
 @app.route("/", methods=["POST", "GET"])
 def index():
+    #Map
+    mapEcuador = map()
     return render_template('Access/index.html', capilalizes=mapEcuador)
 
 
@@ -218,9 +219,13 @@ def login():
             
             # check if email exists in database
             email_found = Userdb.find_one({"email": email})
+            
+            if email_found == None:
+                message = 'Verifique que los datos esten correctamente'
+                return render_template('Access/login.html', message=message)
+            
             is_active = email_found['is_active']
-
-            if is_active == True:
+            if is_active == True and email_found!= None:
                 if email_found:
                     email_val = email_found['email']
                     passwordcheck = email_found['password']
@@ -385,6 +390,7 @@ def get_user(id):
         
         if estado == False:
             Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': True}})
+
             msg = Message(subject="Cuenta Activada!", recipients=[str(email)])
             msg.html = render_template('Mail/active_account.html', users=user)
             mail.send(msg)
@@ -404,14 +410,33 @@ def get_user(id):
                 extra_headers={'':''},
                 mail_options=[],
                 rcpt_options=[]
-
             )
 
-            message = 'Se ha enviado un correo a ', email
             return redirect(url_for("admin_panel"))
 
         else:
             Userdb.update_one({'_id': ObjectId(id)}, {"$set": {'is_active': False}})
+            msg = Message(subject="Cuenta Deshabilitada", recipients=[str(email)])
+            msg.html = render_template('Mail/inactive_account.html', users=user)
+            mail.send(msg)
+
+            msg = Message(
+                subject = '',
+                recipients = [],
+                body = '',
+                html = '',
+                sender = '',
+                cc = [],
+                bcc = [],
+                attachments = [],
+                reply_to = [],
+                date = 'date',
+                charset='',
+                extra_headers={'':''},
+                mail_options=[],
+                rcpt_options=[]
+
+            )
             return redirect(url_for("admin_panel"))
 
     else:
