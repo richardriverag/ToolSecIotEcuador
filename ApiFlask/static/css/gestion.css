@@ -519,21 +519,34 @@
       }
   }
   .alert{
+    background: #ffdb9b;
+    padding: 20px 40px;
     width: 400px;
     position: absolute;
-    left: 910px;
+    right: 0px;
     top: 10px;
+    overflow: hidden;
     border-radius: 4px;
-    border-left: 4px solid #9b280b;
+    border-left: 8px solid #ffa502;
   }
 
-  
+
+.close-btn:hover{
+  background: #ffc766;
+}
+.close-btn .fa-times{
+  color: #ce8500;
+  font-size: 22px;
+  line-height: 40px;
+}
  
-  .alert.alert-danger{
+  .alert.show{
     animation: show_slide 1s ease forwards;
   }
   @keyframes show_slide {
     0%{
       transform: translateX(100%);
     }
+   
   }
+
