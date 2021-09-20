@@ -326,7 +326,7 @@ def capturadepantalla(ip, puerto):
         optionsChr.add_argument('--version')
 
         browser = webdriver.Chrome(
-            executable_path=r'C:\\xampp\\htdocs\\Flask_IotEcuador\\IoT_Divices\\FirefoxDriver\\chromedriver.exe', options=optionsChr)
+            executable_path=r'C:\\xampp\\htdocs\\Flask_IotEcuador\\Script\\FirefoxDriver\\chromedriver.exe', options=optionsChr)
         
         browser.implicitly_wait(10)
         browser.set_page_load_timeout(10)
@@ -337,7 +337,7 @@ def capturadepantalla(ip, puerto):
         ic(nombreimagen)
         screenshot = browser.get_screenshot_as_file(
 
-            r"C:\\xampp\\htdocs\\Flask_IotEcuador\\ApiFlask\static\\capturas\\" + str(nombreimagen))  # Bool
+            r"C:\\xampp\\htdocs\\Flask_IotEcuador\\ApiFlask\\static\\capturas\\" + str(nombreimagen))  # Bool
         ic.disable()
         ic(screenshot)
 

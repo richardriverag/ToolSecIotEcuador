@@ -1,63 +1,122 @@
 {% extends "Access/base.html" %}{% block content %}
 
 
-<section class="post-list">
-	<div class="content">
-		{% for item in items %}
-		<article class="post1">
-			
-			<div class="post-body">
-				
-				<h5 class="card-title">Dirección: {{item.Direccion}}</h2>
-					<ul class="list-group list-group-flush lista1">
-						<li class="list-group-item">Fecha: {{item.Fecha}} </li>
-						<li class="list-group-item">Pais: {{item.Localizacion.country_name}}</li>
-						<li class="list-group-item">Ciudad: {{item.Localizacion.city}}</li>
-						<li class="list-group-item">Codigo: {{item.Localizacion.region_code}}</li>
-						<li class="list-group-item">Latitud: {{item.Localizacion.latitude}}</li>
-						<li class="list-group-item">Latitud: {{item.Localizacion.longitude}}</li>
-						<li class="list-group-item">Dominio: {{item.Dominio}}</li>
-						<li class="list-group-item">Dns: {{item.Dns}}</li>
-						<li class="list-group-item">Range Ipv4: {{item.Whois.asn_cidr}}</li>
-						<li class="list-group-item">Descripción: {{item.Whois.asn_description}}</li>
-					</ul>
-				  
-			  </div>
-		</article>
-		{% for x in item.puerto %}
-		<article class="post2">
-			
 
-		  <div class="post-header">
-			{% if x.Imagen%}
-			<div>
-				<img src="static/capturas/{{x.Imagen}}" class="img-fluid"/>
+<div class="container">
+	<div class="row">
+	  <div class="col-6 " style="padding-top: 20px; padding-bottom: 20px;">
+
+
+		<div class="card " style="width: 450px; ">
+			{% for item in items %}
+			<div class="card-header">
+				Dirección: {{item.Direccion}}
 			</div>
-
-			{% else %}
-			<div class="caja-2"></div>
-
-		  </div>
-		  	{% endif %}
-
-
-		  <div class="post-body">
-			  
 			<ul class="list-group list-group-flush">
-				<li class="list-group-item">Puerto: {{x.Puerto}}</li>
+				<li class="list-group-item">Fecha: {{item.Fecha}} </li>
+				<li class="list-group-item">Pais: {{item.Localizacion.country_name}}</li>
+				<li class="list-group-item">Ciudad: {{item.Localizacion.city}}</li>
+				<li class="list-group-item">Codigo: {{item.Localizacion.region_code}}</li>
+				<li class="list-group-item">Latitud: {{item.Localizacion.latitude}}</li>
+				<li class="list-group-item">Latitud: {{item.Localizacion.longitude}}</li>
+				<li class="list-group-item">Dominio: {{item.Dominio}}</li>
+				<li class="list-group-item">Dns: {{item.Dns}}</li>
+				<li class="list-group-item">Range Ipv4: {{item.Whois.asn_cidr}}</li>
+				<li class="list-group-item">Descripción: {{item.Whois.asn_description}}</li>
+			</ul>
+		  </div>
+</div>
+	  <div class="col-6 "  style="padding-top: 20px; padding-bottom: 20px;">
+		  <div class="contenedor-sobre-iot " id="container">
+        
+		<script >
+				
+				// Prepare demo data
+				// Data is joined to map using value of 'hc-key' property by default.
+				// See API docs for 'joinBy' for more info on linking data and map.
+			   
+				var data = {{capilalizes | safe }}
+	
+				// Create the chart
+				Highcharts.mapChart('container', {
+					chart: {
+						map: 'countries/ec/ec-all',
+						borderColor: '#08338F',
+						borderRadius: 10,
+						borderWidth: 2
+					},
+	
+					title: {
+						text: 'Iot Ecuador',
+					},
+	
+					subtitle: {
+						text: '<b>Estado de Ecuador</b>'
+					},
+	
+					mapNavigation: {
+						enabled: true,
+						buttonOptions: {
+							verticalAlign: 'bottom'
+						}
+					},
+	
+					colorAxis: {
+						min: 0,
+						minColor: "#B7D4EB",
+						maxColor: "#08338F"
+					},
+	
+					series: [{
+						data: data,
+						name: 'Direcciones con puertos activos',
+						states: {
+							
+						},
+						dataLabels: {
+							enabled: true,
+							format: '{point.name}'
+						}
+						
+					}, {
+						name: 'Separators',
+						type: 'mapline',
+						data: Highcharts.geojson(Highcharts.maps['countries/ec/ec-all'], 'mapline'),
+						color: 'silver',
+						nullColor: 'silver',
+						showInLegend: true,
+						enableMouseTracking: true
+						
+					}]
+				});
+	
+			</script>
+	
+		</div>
+	  </div>
+  
+	
+{% for x in item.puerto %}
+<div class="card mb-3">
+	{% if x.Imagen%}
+		<img src="static/capturas/{{x.Imagen}}" class="card-img-top"  alt="...">
+		{% else %}
+		<img src="static/img/sinimagen.jpg"class="card-img-top"  alt="...">
+		{% endif %}
+	
+	<div class="card-body">
+	  <ul class="list-group list-group-flush">
+		<li class="list-group-item">Puerto: {{x.Puerto}}</li>
 				{% if x.Banner == ""%}
 				<li class="list-group-item"><p>Banner:</p> No hay información</li>
 				{% else %}
 				<li class="list-group-item"><p>Banner:</p> {{x.Banner}}</li>
 				{% endif %}
-				
-			</div>
-			
-	  </article>
-  	{% endfor %}
-	  {% endfor %}
-
+	</ul>
 	</div>
-  </section>
-
+  </div>
+  {% endfor %}
+  {% endfor %}
+  </div>
+</div>
 		{% endblock %}

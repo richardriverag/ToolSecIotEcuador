@@ -162,7 +162,7 @@ def register():
         
     
         if  validar_pass(password1) == False: 
-            message = 'La contraseña no es segura: Min 8 Caracteres, una letra mayusculas y un número y un caracter especial '
+            message = 'La contraseña no es segura'
             return render_template('Access/register.html', message=message)
 
         if "@" in email and "." in email:
@@ -237,10 +237,10 @@ def login():
                     else:
                         if current_user.is_authenticated:
                             return redirect(url_for("home"))
-                        message = 'Wrong password'
+                        message = 'Contraseña incorrecta'
                         return render_template('Access/login.html', message=message)
                 else:
-                    message = 'Email not found'
+                    message = 'Email no existe'
             else:
                 message = 'Aún no se autoriza su cuenta'
         else:
