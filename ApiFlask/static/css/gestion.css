@@ -156,6 +156,7 @@
   .contenedor-sobre-iot{
     display: flex;
     justify-content: space-evenly;
+    height: 600px;
   }
   
   .imagen-about-iot{
@@ -164,6 +165,7 @@
   
   .sobre-iot .contenido-textos{
     width: 50%;
+    
   }
   
   .contenido-textos h3{
@@ -523,7 +525,7 @@
   }
 
   .alert{
-    background: #ffdb9b;
+    background: var(--color-info-100);
     padding: 20px 40px;
     width: 400px;
     position: absolute;
@@ -531,19 +533,16 @@
     top: 10px;
     overflow: hidden;
     border-radius: 4px;
-<<<<<<< HEAD
-    border-left: 8px solid #ffa502;
-=======
     border-left: 4px solid var(--color-danger-900);
->>>>>>> V1.20.09.21
+
   }
 
 
 .close-btn:hover{
-  background: #ffc766;
+  background: var(--color-info-500);
 }
 .close-btn .fa-times{
-  color: #ce8500;
+  color: var(--color-info-600);
   font-size: 22px;
   line-height: 40px;
 }
