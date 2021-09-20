@@ -1,3 +1,4 @@
+
 #main-container{
     width: 1000px;
     margin: 120px auto;
@@ -8,7 +9,7 @@ table{
     text-align: left;
     width: 100%;
     border-collapse: collapse;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Roboto', sans-serif;
     
 }
 
@@ -31,13 +32,13 @@ tr:hover td{
 }
 p{
     color: white;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Roboto', sans-serif;
     font-size: 20px;
 }
 h4{
     color: black;
     text-align: center;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Roboto', sans-serif;
     font-size: 20px; 
 }
 h5{

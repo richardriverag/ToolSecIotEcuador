@@ -2,8 +2,9 @@
     width: 100%;
     padding: 15px;
   }
+
 .registro{
-    background: rgb(146, 119, 119);
+    background: var(--color-danger-200);
     margin: auto;
     padding: 3px;
     width: 30%;
@@ -11,11 +12,13 @@
     margin-top: 25px;
     justify-content: center;
   }
+
   h1{
     text-align: center;
-    color:black;
+    color:var(--color-info-100);
     font-size: 40px;
   }
+
 input[type="text"],
 input[type="password"]{
   font-size: 20px;
@@ -24,23 +27,22 @@ input[type="password"]{
   border: none;
 
 }
+
 .input-contenedor{
   margin-bottom: 5px;
   margin-top: 0px;
-  border: 1px solid #aaa;
   width: 300px;
-
-
 }
+
 .icon{
   min-width: 50px;
   text-align: center;
-  color: #999;
+  color: var(--color-info-100);
 }
 .button{
   border: none;
   width: 40%;
-  color: white;
+  color: var(--color-info-100);
   font-size: 20px;
   background: black;
   padding: 20x 15px;
@@ -49,7 +51,7 @@ input[type="password"]{
   text-align: center;
 }
 .button:hover{
-  background: cadetblue;
+  background: var(--color-info-300);
 }
 p{
   text-align: center;
@@ -60,8 +62,9 @@ p{
   color: #1a2537;
   font-weight: 600;
 }
+
 .link:hover{
-  color:cadetblue;
+  color:var(--color-success-600);
 
 }
 @media(min-width:768px){
@@ -75,10 +78,9 @@ p{
 .login-box {
   width: 350px;
   height: 380px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
   margin: auto;
   padding: 20px 30px;
-
   margin-bottom: 50px;
   margin-top: 50px;
   box-sizing: border-box;
@@ -88,7 +90,7 @@ p{
   margin: 0;
   padding: 0 0 20px;
   text-align: center;
-  color: white;
+  color: var(--color-info-100);
   font-size: 30px;
 }
 .login-box label {
@@ -96,7 +98,7 @@ p{
   padding: 0;
   font-weight: bold;
   display: block;
-  color: white;
+  color: var(--color-info-100);
 }
 .login-box input {
   width: 100%;
@@ -104,21 +106,19 @@ p{
 }
 .login-box input[type="password"] {
   border: none;
-  border-bottom: 1px solid #fff;
   background: transparent;
   outline: none;
   height: 40px;
-  color: #fff;
+  color: var(--color-success-600);
   font-size: 16px;
 }
 
 .login-box input[type="text"] {
   border: none;
-  border-bottom: 1px solid #fff;
   background: transparent;
   outline: none;
   height: 40px;
-  color: #fff;
+  color: var(--color-success-600);
   font-size: 16px;
   width: 300px;
 }
@@ -128,16 +128,16 @@ p{
   border: none;
   outline: none;
   height: 40px;
-  background: #b80f22;
-  color: #fff;
+  background: var(--color-success-600);
+  color: var(--color-info-100);
   font-size: 18px;
   border-radius: 20px;
 }
 
 .login-box input[type="submit"]:hover {
   cursor: pointer;
-  background: #ffc107;
-  color: #000;
+  background: var(--color-info-600);
+  color: var(--color-info-100);
 }
 
 
@@ -145,17 +145,17 @@ p{
   text-decoration: none;
   font-size: 15px;
   line-height: 20px;
-  color: darkgrey;
+  color: var(--color-info-100);
 }
 .login-box a:hover {
-  color: #fff;
+  color: var(--color-success-600);
 }
 
 
 .login-box1 {
   width: 400px;
   height: 700px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
   margin: auto;
   padding: 20px 30px;
 
@@ -175,15 +175,15 @@ p{
   margin: 0;
   padding: 0 0 20px;
   text-align: center;
-  color: white;
-  font-size: 22px;
+  color: var(--color-info-100);
+  font-size: 40px;
 }
 .login-box1 label {
   margin: 0;
   padding: 0;
   font-weight: bold;
   display: block;
-  color: white;
+  color: var(--color-info-100);
 }
 .login-box1 input {
   width: 100%;
@@ -191,22 +191,20 @@ p{
 }
 .login-box1 input[type="password"] {
   border: none;
-  border-bottom: 1px solid #fff;
   background: transparent;
   outline: none;
   height: 40px;
-  color: #fff;
+  color: var(--color-success-600);
   font-size: 16px;
   width: 300px;
 }
 
 .login-box1 input[type="text"] {
   border: none;
-  border-bottom: 1px solid #fff;
   background: transparent;
   outline: none;
   height: 40px;
-  color: #fff;
+  color: var(--color-success-600);
   font-size: 16px;
   width: 300px;
 }
@@ -216,16 +214,16 @@ p{
   border: none;
   outline: none;
   height: 40px;
-  background: #b80f22;
-  color: #fff;
+  background: var(--color-success-600);
+  color: var(--color-info-100);
   font-size: 18px;
   border-radius: 20px;
 }
 
 .login-box1 input[type="submit"]:hover {
   cursor: pointer;
-  background: #ffc107;
-  color: #000;
+  background: var(--color-info-600);
+  color: var(--color-info-100);
 }
 
 
@@ -233,8 +231,8 @@ p{
   text-decoration: none;
   font-size: 15px;
   line-height: 20px;
-  color: darkgrey;
+  color: var(--color-info-100);
 }
 .login-box1 a:hover {
-  color: #fff;
+  color: var(--color-success-600);
 }
