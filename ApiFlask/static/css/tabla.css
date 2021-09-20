@@ -5,33 +5,48 @@
 }
 
 table{
-    background-color: #ddd;
+    background-color: rgba(0,0,0,0.3);
     text-align: left;
     width: 100%;
     border-collapse: collapse;
     font-family: 'Roboto', sans-serif;
-    
 }
 
-th, td{
-    
+td{
     padding: 20px;
+    color: black;
 }
+
+th{
+    padding: 22px;
+    color: var(--color-info-100);
+}
+
+  /* visited link */
+a:visited {
+    color: var(--color-warning-900);
+  }
+  
+  /* mouse over link */
+a:hover {
+    color: var(--color-info-100);
+  }
+  
+
 thead{
-    background-color: rgb(61, 61, 110);
-    border-bottom: solid 5px  #0a5fcf;
-    color: white;
+    background-color: var(--color-info-800);
+    border-bottom: solid 5px  var(--color-info-900);
+    color: var(--color-info-100);
 }
 tr:nth-child(even){
-    background-color: #ddd;
-
+    background-color: var(--color-info-100);
 }
 tr:hover td{
-    background-color:  #0a5fcf;
-    color: white;
+    background-color: var(--color-info-600);
+    color: var(--color-info-100);
 }
 p{
-    color: white;
+    color: var(--color-info-100);
     font-family: 'Roboto', sans-serif;
     font-size: 20px;
 }
@@ -42,12 +57,14 @@ h4{
     font-size: 20px; 
 }
 h5{
-    color: white;
+    color: var(--color-info-100);
 }
+
 .category{
     text-align: center;
     color: black;
 }
+
 .box{
     position: relative;
     left: 25%;
@@ -63,19 +80,29 @@ input{
     box-sizing: border-box;
     transition: .5s;
 }
+
 #cars{
-    
     width: 150px;
     height: 50px;
-    background: rgb(61, 61, 110);
-    color: white;
+    background: var(--color-info-800);
+    color: var(--color-info-100);
     border: none;
     outline: none;
     padding: 0 25px;
     border-radius: 25px 0 0 25px;
 }
+
+option{
+    background-color: var(--color-info-800);
+}
+
+option:hover{
+    background-color: var(--color-info-800);
+}
+
+
 input[type="text"]{
-    background: #fff;
+    background: var(--color-info-100);
     width: 340px;
     height: 50px;
     left: -5px;
@@ -95,25 +122,26 @@ input[type="submit"]{
     border: none;
     outline: none;
     cursor: pointer;
-    background: rgb(61, 61, 110);
-    color: white;
+    background: var(--color-info-800);
+    color: var(--color-info-100);
 }
+
 input[type="submit"]:hover{
-    background: #0a5fcf;
+    background: var(--color-info-500);
     
 }
 #lista{
-    color: white;
+    color: var(--color-info-100);
 }
 h6{
-    color: white;
+    color: var(--color-info-100);
     font-size: 20px;
 }
 .my-custom-scrollbar {
     position: relative;
     height: 500px;
     overflow: auto;
-    background-color: #ddd;
+    background-color: var(--color-info-100);
     text-align: left;
     width: 100%;
     border-collapse: collapse;

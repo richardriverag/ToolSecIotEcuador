@@ -50,14 +50,14 @@ article{
     transition: .2s;
 }
 .post1{
-    box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 1);
+    box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 3);
     transition: .2s;
     width: 800px;
     
 }
 
 .post{
-    box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 1);
+    box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 3);
     transition: .2s;
     width: 350px;
     
@@ -121,8 +121,8 @@ article{
     transition: .2s;
 }
 .post-body a{
-    background-color: rgb(61, 61, 110);
-    color: white;
+    background-color: var(--color-success-600);
+    color: var(--color-info-100);
     padding: 15px 20px;
     display: block;
     text-align: center;
@@ -130,12 +130,14 @@ article{
     text-decoration: none;
 }
 .post-body:hover{
-    background-color: rgba(78, 82, 126, 0.87);
-    color: white;
+    background-color: var(--color-info-600);
+    color: var(--color-info-100);
     cursor: pointer;
     transform: scale(1.03);
     transition: all 1s ease;
+    height: 350px;
 }
+
 .lista1{
-    background: rgba(0, 0, 0, 1);
+    background: rgba(0, 0, 0, 3);
 }
