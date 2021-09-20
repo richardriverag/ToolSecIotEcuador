@@ -156,7 +156,7 @@ def cabecera():
         Users = ":.HERRAMIENTA DE ANÁLISIS DE VULNERABILIDADES EN DISPOSITIVOS IOT EN ECUADOR.:\n\n"
         inicio = 'Bienvenido!  >>>' + hostname + '<<<'
 
-        print(bcolors.WARNING + Title + bcolors.ENDC)
+        print(bcolors.OKGREEN + Title)
         print(typewrite(Users))
         print(typewrite(inicio))
 
@@ -456,8 +456,8 @@ def new_search(valor):
         if ((valor == "Si") or (valor == "si") or (valor == "s") or (valor == "S")):
             return opc1()
         else:
-            print(bcolors.HEADER +
-                  "\n\n\t Gracias por usar el sistemas de Busqueda \n\n" + bcolors.ENDC)
+            print(
+                  "\n\n\t Gracias por usar el sistemas de Busqueda \n\n")
             exit(1)
 
     except Exception:
@@ -596,7 +596,7 @@ def agregar(repeticiones):
 
     except Exception as e:
         print("Se ha producido un error al agregar o actualizar la dirección IPv4:" +
-              bcolors.WARNING + e + bcolors.ENDC)
+                e  )
         exit(1)
 
     # resultado
