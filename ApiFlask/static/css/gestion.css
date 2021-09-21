@@ -96,7 +96,7 @@
   
   nav{
       text-align: center;
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: #0a0a0a;
       color: var(--color-info-100);
       border: 50px;
       padding-bottom: 150px;
@@ -187,7 +187,7 @@
   
   
   .portafolio{
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: #0a0a0a;
   }
   
   .galeria-port{
@@ -254,7 +254,7 @@
   }
   
   .cards .card{
-    background: rgba(0, 0, 0, 0.3);
+    background: #0a0a0a;
     display: flex;
     width: 46%;
     height: 200px;
@@ -288,7 +288,7 @@
   /*  Our servicios */
   
   .about-services{
-    background: rgba(0, 0, 0, 0.3);
+    background: #0a0a0a;
     padding-bottom: 30px;
   }
   

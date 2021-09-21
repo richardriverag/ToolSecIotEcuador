@@ -21,9 +21,9 @@
             Highcharts.mapChart('container', {
                 chart: {
                     map: 'countries/ec/ec-all',
-                    borderColor: '#08338F',
+                    borderColor: '#E40505',
                     borderRadius: 10,
-                    borderWidth: 2
+                    borderWidth: 3
                 },
 
                 title: {
@@ -37,14 +37,14 @@
                 mapNavigation: {
                     enabled: true,
                     buttonOptions: {
-                        verticalAlign: 'bottom'
+                        verticalAlign: 'bottom',
                     }
                 },
 
                 colorAxis: {
                     min: 0,
-                    minColor: "#B7D4EB",
-                    maxColor: "#08338F"
+                    minColor: "#bbbdb9",
+                    maxColor: "#c60000"
                 },
 
                 series: [{
@@ -66,7 +66,6 @@
                     nullColor: 'silver',
                     showInLegend: true,
                     enableMouseTracking: true
-                    
                 }]
             });
 

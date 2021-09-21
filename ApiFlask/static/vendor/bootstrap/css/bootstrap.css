@@ -424,7 +424,7 @@ hr {
   margin-top: 1rem;
   margin-bottom: 1rem;
   border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  border-top: 1px solid #0a0a0a;
 }
 
 small,
@@ -4347,7 +4347,7 @@ tbody.collapse.show {
 }
 
 .navbar-light .navbar-nav .nav-link.disabled {
-  color: rgba(0, 0, 0, 0.3);
+  color: #0a0a0a;
 }
 
 .navbar-light .navbar-nav .show > .nav-link,
@@ -4359,7 +4359,7 @@ tbody.collapse.show {
 
 .navbar-light .navbar-toggler {
   color: rgba(0, 0, 0, 0.5);
-  border-color: rgba(0, 0, 0, 0.3);
+  border-color: #0a0a0a;
 }
 
 .navbar-light .navbar-toggler-icon {

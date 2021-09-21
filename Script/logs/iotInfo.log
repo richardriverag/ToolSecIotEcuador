@@ -551,3 +551,6 @@
 2021-09-20 12:35:06,919: INFO: Ipv4: 190.130.224.232, Agregada!
 2021-09-20 12:48:13,065: INFO: Ipv4: 181.39.36.115, Agregada!
 >>>>>>> V1.20.09.21
+2021-09-21 12:41:39,105: WARNING: Al realizar la conexion con el banner, puerto: 23. 
+2021-09-21 12:44:28,628: INFO: Ipv4: 190.131.36.4, Agregada!
+2021-09-21 12:45:52,992: ERROR: Al buscar la Direccion IPv4 : 190.214.95.66 en la base de datos. find_devices()
