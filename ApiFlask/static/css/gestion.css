@@ -531,11 +531,8 @@
     top: 10px;
     overflow: hidden;
     border-radius: 4px;
-<<<<<<< HEAD
     border-left: 8px solid #ffa502;
-=======
-    border-left: 4px solid var(--color-danger-900);
->>>>>>> V1.20.09.21
+    
   }
 
 
