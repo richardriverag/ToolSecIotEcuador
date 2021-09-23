@@ -6,10 +6,12 @@ import bcrypt
 from datetime import date, datetime
 from bson.objectid import ObjectId
 from pymongo import message
+import pymongo
 from filtros import getDevice_db, getClient_db, datainfo, datacity, validar_password, map
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from functools import wraps
 from flask_mail import Mail, Message 
+from pymongo import MongoClient
 
 
 
@@ -258,7 +260,7 @@ def login():
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return render_template(('Access/login.html'))
 
 
 
@@ -276,12 +278,13 @@ def home():
         user_found = Userdb.find_one({"email": email})
         info_user = user_found['username']
 
-        # Listar 10 direcciones "Estado":True
-        Ipv4True = Devicesdb.find({'Estado': True})
+        #obtener las búsquedas de la último análisis
+        Ipv4True = Devicesdb.find({'Estado': True}).sort([("_id", pymongo.DESCENDING)])
+
+         # Listar todas la direcciones IPv4 Analizadas
         cantidad = Ipv4True.count()
         
-        # Listar todas la direcciones IPv4 Analizadas
-
+       
         # Contenedor de información 
         data = datainfo(cantidad, "")
 

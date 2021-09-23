@@ -84,6 +84,7 @@ p{
   margin-bottom: 50px;
   margin-top: 50px;
   box-sizing: border-box;
+  border-radius: 2%;
 }
 
 .login-box h1 {
@@ -153,12 +154,12 @@ p{
 
 
 .login-box1 {
-  width: 400px;
+  width: 350px;
   height: 700px;
   background-color: #0a0a0a;
   margin: auto;
   padding: 20px 30px;
-
+  border-radius: 2%;
   margin-bottom: 50px;
   margin-top: 50px;
   box-sizing: border-box;
