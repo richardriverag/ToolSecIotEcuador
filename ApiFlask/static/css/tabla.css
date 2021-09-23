@@ -5,7 +5,7 @@
 }
 
 table{
-    background-color: var(--color-info-100);
+    background-color: var(--color-success-100);
     text-align: left;
     width: 100%;
     border-collapse: collapse;
