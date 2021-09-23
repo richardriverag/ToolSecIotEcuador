@@ -5,7 +5,7 @@
 }
 
 table{
-    background-color: rgba(0,0,0,0.3);
+    background-color: var(--color-info-100);
     text-align: left;
     width: 100%;
     border-collapse: collapse;
@@ -102,7 +102,7 @@ option:hover{
 
 
 input[type="text"]{
-    background: var(--color-info-100);
+    background: var(--color-success-100);
     width: 340px;
     height: 50px;
     left: -5px;
@@ -141,7 +141,7 @@ h6{
     position: relative;
     height: 500px;
     overflow: auto;
-    background-color: var(--color-info-100);
+    background-color: #ffff;
     text-align: left;
     width: 100%;
     border-collapse: collapse;
