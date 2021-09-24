@@ -101,6 +101,7 @@
       border: 50px;
       padding-bottom: 150px;
       padding-left: 0px;
+      height: 75px;
       
   }
   
@@ -108,7 +109,7 @@
     margin: 0 5px 0 5px;
   }
   
-  nav > a{
+  nav  a{
     color: var(--color-info-100);
     font-weight: 300;
     text-decoration: none;
@@ -116,9 +117,11 @@
     
   }
   
-  nav > a:hover{
+  nav  a:hover{
     text-decoration: underline;
-    
+    cursor: pointer;
+  background: var(--color-info-600);
+  color: var(--color-info-100);
   }
   
   header .textos-header{
