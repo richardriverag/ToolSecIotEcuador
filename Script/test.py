@@ -30,7 +30,7 @@ from funcionamiento import herramienta
 logging.basicConfig(filename='logs/iotInfo.log', level='INFO',
                     format='%(asctime)s: %(levelname)s: %(message)s')
 
-client = 'edison'
+client = 'admin'
 passdb = 'GnzNw2aAyJjKGOs7'
 dbname = 'iotecuador'
 
@@ -40,7 +40,7 @@ dbname = 'iotecuador'
 def get_db():
     try:
         url_client = MongoClient("mongodb+srv://"+client+":"+passdb +
-                                 "@iotecuador.qbeh8.mongodb.net/"+dbname+"?retryWrites=true&w=majority")
+                                 "@iotecuador.qbeh8.mongodb.net/"+dbname+"?ssl=true&ssl_cert_reqs=CERT_NONE")
         mydb = url_client.iotecuador
 
     except Exception:
