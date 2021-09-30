@@ -7,7 +7,8 @@ from datetime import date, datetime
 from bson.objectid import ObjectId
 from pymongo import message
 import pymongo
-from filtros import getDevice_db, getClient_db, datainfo, datacity, validar_password, map
+from MongoCliente import getDevice_db, getClient_db
+from filtros import  datainfo, datacity, validar_password, map
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from functools import wraps
 from flask_mail import Mail, Message 

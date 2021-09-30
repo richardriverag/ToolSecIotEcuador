@@ -23,40 +23,15 @@ import pygeoip  # Para la geolcalización de las direcciones ip.
 from ipaddress import IPv4Address  # Manejos de IPv4.
 from random import randint  # Para la generación de ipv4 al azar.
 hostname = getpass.getuser()  # Obtener el nombre de la maquina local.
-
+from MongoCliente import get_db
 from funcionamiento import herramienta
 
 # Generar información de diagnostico para scripts con el módulo logging.
 logging.basicConfig(filename='logs/iotInfo.log', level='INFO',
                     format='%(asctime)s: %(levelname)s: %(message)s')
 
-client = 'admin'
-passdb = 'GnzNw2aAyJjKGOs7'
-dbname = 'iotecuador'
 
-# Conexión MongoAtlas.
-
-
-def get_db():
-    try:
-        url_client = MongoClient("mongodb+srv://"+client+":"+passdb +
-                                 "@iotecuador.qbeh8.mongodb.net/"+dbname+"?ssl=true&ssl_cert_reqs=CERT_NONE")
-        mydb = url_client.iotecuador
-
-    except Exception:
-        logging.error(
-            'No se puede conectar con la DataBase: %s. Verifique el cliente de conexion: get_db()', dbname)
-        exit(1)
-
-    except ServerSelectionTimeoutError as e:
-        logging.error(
-            'No se puede conectar con la DataBase: %s. Verifique su conexion', dbname)
-        exit(1)
-    return mydb
-
-
-
-
+db = get_db()  # Conexiíon a la BD
 
 # Valida la existencia de la Ipv4 en la BD.
 # 0: No Existe la IPv4 en la BD.
@@ -67,7 +42,7 @@ def get_db():
 
 def find_devices(IPV4):
     try:
-        db = get_db()  # Conexiíon a la BD
+        
         valor = 0
         Ipv4Bd = ''
 
@@ -426,7 +401,6 @@ def addNewDevices(ip, portOpen, exist):
         # Los atributos que se asignan son los siguientes: (ip, img, fecha ,location, whois, dominio, dns, puerto)
         if exist == 0:
             estado = True
-            db = get_db()
             datos = Device(str(ip), estado, date, location,
                            whois, str(dominio), str(dns), puertoList)
             db.Devices.insert_one(datos.toCollection())
@@ -436,7 +410,6 @@ def addNewDevices(ip, portOpen, exist):
 
         # Paso el límite los días esblecidos
         if exist == 1:
-            db = get_db()
             db.Devices.update_one({"Direccion": str(ip)}, {"$set": {"Estado": True, "Fecha": date,
                                   "Whois": whois, "Dominio": str(dominio), "Dns": str(dns), "puerto": puertoList}})
 
@@ -491,7 +464,6 @@ def repeat(repeticiones):
 def EmptyPort(IPv4, exist):
     try:
         estadoBd = False  # Se agrege la nueva direccion IPv4
-        db = get_db()  # Conexiíon a la BD
         date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         search = db.Devices.find({'Direccion': IPv4})
         for r in search:
