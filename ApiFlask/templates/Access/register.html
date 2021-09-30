@@ -42,25 +42,68 @@
         
   
   <label for="texto">Pregunta</label>
-    <input  type="text" name="texto"  id="InputEmail" class="form-control" placeholder="¿Por qué desea usar la aplicación?">
+  <textarea type="text" name="texto"  id="InputEmail" class="form-control" placeholder="¿Por qué deseas usas la herramienta?"></textarea>
+   
     
-
     <label for="password1">Contraseña</label>
-    <input type="password" name="password1" class="form-control" id="InputPassword" placeholder="Debe tener al menos(1-9, #$@, A-Z)">
-    
-
+    <div>
+    <input type="password" id="myInput" name="password1" class="form-control" id="InputPassword" placeholder="Debe tener al menos(1-9, #$@, A-Z)" >
+   <span class="eye" onclick="myFunction()">
+    <i id="hide1" class="fas fa-eye" style="color: white;"></i> 
+    <i id="hide2" class="fas fa-eye-slash" style="color: white;"></i>   
+  </span>
+</div>
+<div>
     <label for="password2">Repita su contraseña</label>
-    <input type="password" name="password2" class="form-control" id="InputPassword2" placeholder="Repita la contraseña">
-
-
+    <input type="password" id="myInput1" name="password2" class="form-control" id="InputPassword2" placeholder="Repita la contraseña">
+    <span class="eye" onclick="myFunction1()">
+      <i id="hide3" class="fas fa-eye" style="color: white;"></i> 
+      <i id="hide4" class="fas fa-eye-slash" style="color: white;"></i>   
+    </span>
+  </div>
     <input type="submit" value="Registrate">
         
     <a href="/login">Tienes una cuenta?</a>
 
 </form>
 
+
+<script>
+function myFunction(){
+  var x = document.getElementById("myInput");
+  var y = document.getElementById("hide1");
+  var z = document.getElementById("hide2");
+
+  if(x.type === 'password'){
+    x.type = "text";
+    y.style.display = "block";
+    z.style.display = "none";
+  }else{
+    x.type = "password";
+    y.style.display = "none";
+    z.style.display = "block";
+  }
+}
+</script>
+
+<script>
+  function myFunction1(){
+    var x = document.getElementById("myInput1");
+    var y = document.getElementById("hide3");
+    var z = document.getElementById("hide4");
+  
+    if(x.type === 'password'){
+      x.type = "text";
+      y.style.display = "block";
+      z.style.display = "none";
+    }else{
+      x.type = "password";
+      y.style.display = "none";
+      z.style.display = "block";
+    }
+  }
+  </script>
 </div>
 
 
 {% endblock %}
-

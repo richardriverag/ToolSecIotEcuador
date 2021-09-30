@@ -7,7 +7,7 @@ def getDevice_db():
     dbname = 'iotecuador'
 
     client = MongoClient("mongodb+srv://"+client+":"+passdb +
-                                 "@iotecuador.qbeh8.mongodb.net/"+dbname+"?retryWrites=true&w=majority")
+                                 "@iotecuador.qbeh8.mongodb.net/"+dbname+"?ssl=true&ssl_cert_reqs=CERT_NONE")
     # get the database name
     db = client.get_database(dbname)
     # get the particular collection that contains the data
@@ -21,7 +21,7 @@ def getClient_db():
     passdb = 'kJwNCrAnmv4eXpwU'
     dbname = 'iotecuador'
     client = MongoClient("mongodb+srv://"+client+":"+passdb +
-                                 "@iotecuador.qbeh8.mongodb.net/"+dbname+"?retryWrites=true&w=majority")
+                                 "@iotecuador.qbeh8.mongodb.net/"+dbname+"?ssl=true&ssl_cert_reqs=CERT_NONE")
     # get the database name
     db = client.get_database(dbname)
     # get the particular collection that contains the data
