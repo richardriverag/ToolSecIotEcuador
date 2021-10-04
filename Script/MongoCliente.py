@@ -2,7 +2,6 @@ from pymongo import MongoClient  # Conexión a la base de datos.
 import logging
 from pymongo.errors import ServerSelectionTimeoutError
 
-
 client = 'admin'
 passdb = 'GnzNw2aAyJjKGOs7'
 dbname = 'iotecuador'

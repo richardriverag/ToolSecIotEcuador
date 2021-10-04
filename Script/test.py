@@ -1,11 +1,9 @@
 import logging
+import os
 from selenium.webdriver.chrome import options
 from bcolor import bcolors  # Clase contenedora de los colores.
 from atributos import Device  # Clase atributos.
-from pymongo import MongoClient  # Conexión a la base de datos.
-from pymongo.errors import ServerSelectionTimeoutError
 import sys
-import getpass  # Obtener información del usuario
 # pip install alive_progress & pip install tqdm
 from alive_progress import alive_bar
 from time import sleep
@@ -22,14 +20,14 @@ from ipwhois import IPWhois  # Whois.
 import pygeoip  # Para la geolcalización de las direcciones ip.
 from ipaddress import IPv4Address  # Manejos de IPv4.
 from random import randint  # Para la generación de ipv4 al azar.
-hostname = getpass.getuser()  # Obtener el nombre de la maquina local.
+hostname = os.getenv('computername') # Obtener el nombre de la maquina local.
 from MongoCliente import get_db
+
 from funcionamiento import herramienta
 
 # Generar información de diagnostico para scripts con el módulo logging.
 logging.basicConfig(filename='logs/iotInfo.log', level='INFO',
                     format='%(asctime)s: %(levelname)s: %(message)s')
-
 
 db = get_db()  # Conexiíon a la BD
 
@@ -66,7 +64,7 @@ def find_devices(IPV4):
                 Tiempoconsulta = 30  # Tiempo en días.
 
                 valor = DateTime(fechaBd, Tiempoconsulta)
-                ic.enable()
+                ic.disable()
                 ic(valor)
 
             else:
@@ -75,7 +73,7 @@ def find_devices(IPV4):
                 Tiempoconsulta = 15  # Tiempo en días.
 
                 valor = DateTime(fechaBd, Tiempoconsulta)
-                ic.enable()
+                ic.disable()
                 ic(valor)
 
         else:  # No Existe!
@@ -123,7 +121,7 @@ def DateTime(FechaBD, days):
 # Impresión de Texto Principal.
 
 
-def cabecera():
+def main():
     # install pip install pyfiglet
     try:
         Title = pyfiglet.figlet_format(
@@ -131,18 +129,18 @@ def cabecera():
         Users = ":.HERRAMIENTA DE ANÁLISIS DE VULNERABILIDADES EN DISPOSITIVOS IOT EN ECUADOR.:\n\n"
         inicio = 'Bienvenido!  >>>' + hostname + '<<<'
 
-        print(bcolors.OKGREEN + Title)
+        print(bcolors.OKGREEN + Title + bcolors.ENDC)
         print(typewrite(Users))
         print(typewrite(inicio))
 
     except Exception:
-        logging.error("Cabecera()")
+        logging.error("main()")
         exit(1)
 
 # Validar el número a entero.
 
 
-def lee_entero():
+def number():
     try:
 
         while True:
@@ -183,12 +181,12 @@ def typewrite(text):
 def opc1():
     pr = " \nOk!. Cúantas direcciones Ipv4 Aleatorias deseas Analizar: \n"
     print(typewrite(pr))
-    cant = lee_entero()
+    cant = number()
     maxCant = repeat(cant)
-    agregar(int(maxCant))
+    addIPv4(int(maxCant))
 
 
-def main():
+def body():
     try:
 
         while True:
@@ -219,7 +217,7 @@ def main():
                 break
 
             if num == str(3):
-                print("\n\n\t Gracias por usar el sistemas de Busqueda \n\n")
+                print("\n\n\t Gracias por usar el sistemas IoT Ecuador \n\n")
                 exit(1)
 
             if num == '':
@@ -234,18 +232,21 @@ def main():
 
     except Exception as e:
         logging.warning(
-            "Se ha producido un error al introducir la opción: %s. main()", num)
+            "Se ha producido un error al introducir la opción: %s. body()", num)
         exit(1)
 
 
 # Direcciones IPV4  de Ecuador aleatorias.
 
-def Generar_IP_Ecuador_Aleatoria():
+def random_ip_Ecuador():
     try:
         while True:  # Bucle que se cierra una ves obtenga la direcciones ipv4 de Ecuador
 
             ip = IPv4Address('{0}.{1}.{2}.{3}'.format(
                 randint(0, 255), randint(0, 255), randint(0, 255), randint(0, 255)))
+
+            #ip = "200.7.195.124" #Puertos abiertos pero no realiza captura de ninguno.
+            ip = "201.234.193.196" #Nueva Ipv4 Puertos abiertos
 
             obj = pygeoip.GeoIP('Geo/GeoLiteCity.dat')
 
@@ -258,7 +259,7 @@ def Generar_IP_Ecuador_Aleatoria():
 
     except Exception as e:
         logging.error(
-            "Se ha producido un error al crear una dirección Ipv4 randomica. Generar_IP_Ecuador_Aleatoria()")
+            "Se ha producido un error al crear una dirección Ipv4 randomica. random_ip_Ecuador()")
         exit(1)
 
 
@@ -285,7 +286,7 @@ def OpenPort(host, puerto):
 # En caso que la ruta del directorio contenedor de sea incorrecta, se envia un mensaje con el recpectivo error!.
 # El nombre que toma la img es la dirección Ipv4.
 
-def capturadepantalla(ip, puerto):
+def screenshot(ip, puerto):
     setdefaulttimeout(30)
     try:
 
@@ -368,13 +369,17 @@ def addNewDevices(ip, portOpen, exist):
                 ic('%s : %s' % (key, val))
 
             #Realizar la captura.
-            imagen = capturadepantalla(ip, puerto)
+            imagen = screenshot(ip, puerto)
+            ic.enable()
+            ic(imagen)
+
 
 
             # Almacena 'Documentos' dentro de un arreglo, usando append.
             puerto = {'Puerto': str(puerto), 'Banner': str(
                 banner), 'Imagen': str(imagen)}
             puertoList.append(puerto)
+            ic.disable
             ic(puerto)
 
         # Información de los puertos:
@@ -498,7 +503,7 @@ def EmptyPort(IPv4, exist):
 
 
 
-def agregar(repeticiones):
+def addIPv4(repeticiones):
 
     try:
 
@@ -512,7 +517,7 @@ def agregar(repeticiones):
         #print("repeticiones", repeticiones)
         for contador in range(0, int(repeticiones)):
             # validar el tipo de busqueda.
-            ip = Generar_IP_Ecuador_Aleatoria()  # llamamos a la funcion, ip aleatorias
+            ip = random_ip_Ecuador()  # llamamos a la funcion, ip aleatorias
             ic.enable()
             Num = contador+1
             ic(Num, ip)
@@ -589,5 +594,6 @@ def final():
 
 if __name__ == "__main__":
     colorama.init()
-    cabecera()
     main()
+    body()
+    

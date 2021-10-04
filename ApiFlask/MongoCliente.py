@@ -1,5 +1,4 @@
 from pymongo import MongoClient  # Conexión a la base de datos.
-import re
 
 def getDevice_db():
     client = 'client'
