@@ -31,7 +31,7 @@ logging.basicConfig(filename='logs/iotInfo.log', level='INFO',
 
 db = get_db()  # Conexiíon a la BD
 
-# Valida la existencia de la Ipv4 en la BD.
+
 # 0: No Existe la IPv4 en la BD.
 # 1: Existe la dirección IPv4, supera el tiempo limite en días.
 # -1: Existe la dirección IPv4, No! supera el tiempo limite en días.
@@ -245,14 +245,17 @@ def random_ip_Ecuador():
             ip = IPv4Address('{0}.{1}.{2}.{3}'.format(
                 randint(0, 255), randint(0, 255), randint(0, 255), randint(0, 255)))
 
-            #ip = "200.7.195.124" #Puertos abiertos pero no realiza captura de ninguno.
-            ip = "201.234.193.196" #Nueva Ipv4 Puertos abiertos
+            #ip = "201.234.193.196" #Ipv4 Puertos abiertos
 
             obj = pygeoip.GeoIP('Geo/GeoLiteCity.dat')
 
             # Validar que la direccion  ipv4 es de ecuador
             if(obj.country_code_by_addr(str(ip)) == "EC"):
-
+                # adñadir información de la direccion Ipv4
+                location = obj.record_by_addr(str(ip))
+                for key, val in location.items():
+                    ic.disable()
+                    ic('%s : %s' % (key, val))
                 break
 
         return str(ip)  # guardar ipv4 de Ecuador
@@ -435,7 +438,7 @@ def new_search(valor):
             return opc1()
         else:
             print(
-                  "\n\n\t Gracias por usar el sistemas de Busqueda \n\n")
+                  "\n\n\t Gracias por usar el sistema.\n\n")
             exit(1)
 
     except Exception:
