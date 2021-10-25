@@ -308,6 +308,7 @@
   
   .servicio-ind img{
     width: 90%;
+    background-size: cover;
   }
   
   .servicio-ind h3{

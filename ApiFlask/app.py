@@ -280,7 +280,10 @@ def home():
         info_user = user_found['username']
 
         #obtener las búsquedas de la último análisis
-        Ipv4True = Devicesdb.find({'Estado': True}).sort([("_id", pymongo.DESCENDING)])
+        Ipv4True = Devicesdb.find({'Estado': True})
+        
+        IPv4 = Devicesdb.find({'Estado': True}).sort([("_id", pymongo.DESCENDING)]).limit(100)
+
 
          # Listar todas la direcciones IPv4 Analizadas
         cantidad = Ipv4True.count()
@@ -289,7 +292,7 @@ def home():
         # Contenedor de información 
         data = datainfo(cantidad, "")
 
-        return render_template('dashboard/home.html', filters=Ipv4True, datos=data, users=info_user)
+        return render_template('dashboard/home.html', filters=IPv4, datos=data, users=info_user)
     else:
         return redirect(url_for("login"))
 
@@ -317,6 +320,7 @@ def filter_info():
 
         # Busqueda por dirección IPv4
         if(str(parameter) == "Dirección"):
+            
                 # filtro
             todo_filter = Devicesdb.find({'Direccion': filter})
             cantidad = todo_filter.count()
@@ -351,8 +355,8 @@ def filter_info():
             return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data)
 
         else:
-            message = "Ups! algo salio mal :("
-            return render_template(url_for('home', message))
+            message = "Ups! algo salio mal"
+            return render_template(url_for('home', message=message))
 
     else:
         return redirect(url_for('home'))
