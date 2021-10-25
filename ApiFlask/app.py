@@ -320,6 +320,7 @@ def filter_info():
 
         # Busqueda por dirección IPv4
         if(str(parameter) == "Dirección"):
+            
                 # filtro
             todo_filter = Devicesdb.find({'Direccion': filter})
             cantidad = todo_filter.count()
@@ -354,8 +355,8 @@ def filter_info():
             return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data)
 
         else:
-            message = "Ups! algo salio mal :("
-            return render_template(url_for('home', message))
+            message = "Ups! algo salio mal"
+            return render_template(url_for('home', message=message))
 
     else:
         return redirect(url_for('home'))

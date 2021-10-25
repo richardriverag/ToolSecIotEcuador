@@ -17,11 +17,14 @@ table{
 td{
     padding: 20px;
     color: black;
+    
 }
 
 th{
     padding: 22px;
     color: var(--color-info-100);
+    text-align: center;
+    
 }
 
   /* visited link */
