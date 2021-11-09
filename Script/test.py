@@ -212,7 +212,7 @@ def body():
 
                 Obj = herramienta()
                 print((typewrite(Obj) + "\n"))
-                main()
+                opc1()
 
                 break
 
