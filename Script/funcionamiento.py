@@ -3,6 +3,14 @@ def herramienta():
              '\nRealizar un análisis de seguridad a dispositivos IoT conectados a Internet en el Ecuador,'
              '\ncon la finalidad de obtener información para conocer las vulnerabilidades más comunes y '
              '\nproblemas de seguridad a los que se enfrenta el despliegue de dispositivos IoT en Ecuador.\n'
+
+            '\n Caracteristicas\n'
+            '\n--> El Script toma el nombre del equipo'
+            '\n--> El Script realiza el escaneo de 81 puertos.'
+            '\n--> El Script realiza la captura de pantalla de la Dirección IPV4 + Puerto'
+            '\n--> El Script toma información del dispositivo conectado a internet.'
+            '\n--> El Script cuenta con un archivo llamano: "Requeriment", que contiene todos las librerias '
+            '\n    necesarias para el funcionamiento.\n'
              
             '\nUso:\n'
             '\n--> El administrador, puede ingresar una cantidad máxima de 1000 direcciones IPv4. En caso'
@@ -11,12 +19,6 @@ def herramienta():
             '\n    y los posibles inconveninetes en caso de fallos con procedimientos del script "test.py".'
             '\n--> El administrador, tiene la posibilidad de realizar un nuevo escaneo cuando termine el\n'
             '\n    respectivo analisis.'
-            
-            '\n Caracteristicas\n'
-            '\n--> El Script toma el nombre del equipo'
-            '\n--> El Script cuenta con un archivo executable .exe para windows.'
-            '\n--> El Script cuenta con un archivo llamano: "Requeriment", que contiene todos las librerias '
-            '\n    necesarias para el funcionamiento.\n'
             
             
             '\nVisualiación de resultados:\n'
