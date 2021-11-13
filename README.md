@@ -97,6 +97,15 @@ Jefferson Ricardo Llumiquinga Llumiquinga.
  Si, desea conocer más sobre el proyecto por favor ingrese: [Documentación](https://github.com/EdisonStalin/Flask_IotEcuador)
 
 
+-------------------------------------
 
+### _☣ Version_
+- v0.1
+
+-------------------------------------
+
+### :Advertencia!
+
+***No somos responsables del mal uso del sistema***
 
 Copyright (c) 2021-present, Edison Jumbo.
