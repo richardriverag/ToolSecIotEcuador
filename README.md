@@ -104,7 +104,7 @@ Jefferson Ricardo Llumiquinga Llumiquinga.
 
 -------------------------------------
 
-### :Advertencia!
+### :warning: Advertencia!
 
 ***No somos responsables del mal uso del sistema***
 
