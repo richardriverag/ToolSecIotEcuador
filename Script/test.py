@@ -25,6 +25,12 @@ from MongoCliente import get_db
 
 from funcionamiento import herramienta
 
+
+import threading
+from queue import Queue
+queue = Queue()
+
+
 # Generar información de diagnostico para scripts con el módulo logging.
 logging.basicConfig(filename='logs/iotInfo.log', level='INFO',
                     format='%(asctime)s: %(levelname)s: %(message)s')
