@@ -6,7 +6,7 @@ alive-progress==2.0.0
 icecream==2.1.1
 colorama==0.4.4
 pyfiglet==0.8.post1
-dnspython==2.1.0
+dnspython==2.0.0
 DateTime==4.3
 sockets==1.0.0
 ipwhois==1.2.0
