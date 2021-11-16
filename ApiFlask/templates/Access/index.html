@@ -23,17 +23,23 @@
             Highcharts.mapChart('container', {
                 chart: {
                     map: 'countries/ec/ec-all',
-                    borderColor:'#E40505',
                     borderRadius: 10,
-                    borderWidth: 3
+                    backgroundColor: '#0a0a0a'
                 },
 
                 title: {
                     text: 'Mapa de Direcciones IPv4 con puertos IoT activos ',
+                    style: {
+                        color:'#ffff'
+                    }
+                    
                 },
 
                 subtitle: {
-                    text: '<b>Estado por provicias del Ecuador</b>'
+                    text: '<b>Estado por provicias del Ecuador</b>',
+                    style: {
+                        color:'#ffff'
+                    }
                 },
 
                 mapNavigation: {
@@ -60,14 +66,6 @@
                         format: '{point.name}'
                     }
                     
-                }, {
-                    name: 'Separators',
-                    type: 'mapline',
-                    data: Highcharts.geojson(Highcharts.maps['countries/ec/ec-all'], 'mapline'),
-                    color: 'silver',
-                    nullColor: 'silver',
-                    showInLegend: true,
-                    enableMouseTracking: true
                 }]
             });
 

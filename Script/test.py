@@ -25,10 +25,17 @@ from MongoCliente import get_db
 
 from funcionamiento import herramienta
 
+import multiprocessing
+cpu = multiprocessing.cpu_count() # or os.cpu_count()
 
 import threading
 from queue import Queue
-queue = Queue()
+import time
+
+# Creating the queue and threader
+q = Queue()
+portOpen = []
+
 
 
 # Generar información de diagnostico para scripts con el módulo logging.
@@ -271,23 +278,64 @@ def random_ip_Ecuador():
             "Se ha producido un error al crear una dirección Ipv4 randomica. random_ip_Ecuador()")
         exit(1)
 
+target = '' 
 
 # Recibe un host y los puertos que queremos comprobar y devuelve los puertos abiertos
 
-def OpenPort(host, puerto):
+
+def OpenPort(port):
     try:
         setdefaulttimeout(0.5)  # Tiempo de conexión segundos
         s = socket(AF_INET, SOCK_STREAM)  # Puerto IPv4, TCP PROTOCOL
-        resultado = s.connect_ex((str(host), puerto))
+        resultado = s.connect_ex((str(target), port))
         if resultado == 0:
+            ic.disable()
+            ic(port, "Open \n")
+            portOpen.append(port)
             return True  # Puerto abierto
+            
         else:
+            ic.disable()
+            ic(port, "Close \n")
             return False  # Puerto cerrado
-
+        
     except Exception as e:
         logging.error("Al crear la conexión desde el host: %s ",
-                      host, " con el puerto: %s. OpenPort()", puerto)
+                      target, " con el puerto: %s. OpenPort()", port)
         exit(1)
+
+    finally:
+        s.close()
+
+
+
+# The threader thread pulls a worker 
+# from a queue and processes it
+def threader():
+    while True:
+        # gets a worker from the queue
+        worker = q.get()
+  
+        # Run the example job with the available 
+        # worker in queue (thread)
+        OpenPort(worker)
+  
+        # completed with the job
+        q.task_done()
+    
+
+
+# number of threads are we going to allow for
+for x in range(cpu):
+    t = threading.Thread(target=threader)
+  
+    # classifying as a daemon, so they it will
+    # die when the main dies
+    t.daemon = True
+  
+    # begins, must come after daemon definition
+    t.start()
+start = time.time()
 
 
 # Captura la pantalla de la ip y el puerto dado.
@@ -313,8 +361,8 @@ def screenshot(ip, puerto):
         browser = webdriver.Chrome(
             executable_path=r'C:\\xampp\\htdocs\\Flask_IotEcuador\\Script\\FirefoxDriver\\chromedriver.exe', options=optionsChr)
         
-        browser.implicitly_wait(10)
-        browser.set_page_load_timeout(10)
+        browser.implicitly_wait(15)
+        browser.set_page_load_timeout(15)
         browser.get("http://{0}".format(ip)+":"+str(puerto))
         nombreimagen = str(ip)+","+str(puerto)+".png"  # Nombre de la Img.
         sleep(1)
@@ -351,6 +399,7 @@ def addNewDevices(ip, portOpen, exist):
 
         for puerto in portOpen:
             try:
+                setdefaulttimeout(0.5)  # Tiempo de conexión segundos
                 connection = socket(AF_INET, SOCK_STREAM)
                 connection.connect((ip, puerto))
                 connection.send(b'HEAD / HTTP/1.0\r\n\r\n')
@@ -509,13 +558,8 @@ def EmptyPort(IPv4, exist):
         exit(1)
 
 
-
-
-
 def addIPv4(repeticiones):
-
     try:
-
         PortList = [22, 23, 25, 53, 80, 81, 110, 180, 443, 873, 2323, 5000, 5001, 5094, 5150, 5160, 7547, 8080, 8100, 8443, 8883, 49152, 52869, 56000,
                         1728, 3001, 8008, 8009, 10001, 223, 1080, 1935, 2332, 8888, 9100, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 21, 554, 888, 1159, 1160, 1161,
                         1435, 1518, 3389, 4550, 5005, 5400, 5550, 6550, 7000, 8000, 8081, 8090, 8150, 8866, 9000, 9650, 9999, 10000, 18004, 25001, 30001, 34567, 37777,
@@ -526,57 +570,53 @@ def addIPv4(repeticiones):
         #print("repeticiones", repeticiones)
         for contador in range(0, int(repeticiones)):
             # validar el tipo de busqueda.
-            ip = random_ip_Ecuador()  # llamamos a la funcion, ip aleatorias
+            global target 
+            target = random_ip_Ecuador() # llamamos a la funcion, ip aleatorias
             ic.enable()
             Num = contador+1
-            ic(Num, ip)
+            ic(Num, target)
             # Comprobamos si la IPv4 está en la base de datos MongpAtlas
-            findDeviceBD = find_devices(ip)
+            findDeviceBD = find_devices(target)
 
             ic.enable()
             ic(findDeviceBD)
 
             if(findDeviceBD == 0 or findDeviceBD == 1):
-                portOpen = []
-
+                #portOpen = []
                 num = len(PortList)
-                with alive_bar(num) as bar:
-                    for port in PortList:
-                        bar()
+                #with alive_bar(num) as bar:
+                for port in PortList:
+                    #bar()
+                    q.put(port, target) 
+                print("\tAnalizando: ", num ," puertos..")
+                # wait till the thread terminates.
+                q.join()
 
-                        estadoPort = OpenPort(ip, port)
-
-                        if estadoPort == True:
-
-                            ic.disable()
-                            ic(port, estadoPort)
-                            portOpen.append(port)
-
-                        else:
-                            ic.disable()
-                            ic(port, estadoPort)
-
-                    portsNumbers = len(portOpen)
-
+                portsNumbers = len(portOpen)
+                print("\tFinalizado.")
                 if int(portsNumbers) != 0:
                     ic.enable()
                     ic(portOpen)
-                    Estado = addNewDevices(ip, portOpen, findDeviceBD)
+                    Estado = addNewDevices(target, portOpen, findDeviceBD)
                     ic.enable()
                     ic(Estado)
+                    
 
                 else:
                     ic.enable()
                     ic(portsNumbers)
-                    Estado = EmptyPort(ip, findDeviceBD)
+                    Estado = EmptyPort(target, findDeviceBD)
                     ic.enable()
                     ic(Estado)
                     ic.enable()
+                    
+                
 
             else:
-                print("La dirección IPv4", ip,
-                      " ya existe y es menor a los días establecidos")
-
+                print("La dirección IPv4", target,
+                        " ya existe y es menor a los días establecidos")
+            portOpen.clear()
+            
         print("\n\nBusqueda Finalizada :) \n\n")
         return final()
 
