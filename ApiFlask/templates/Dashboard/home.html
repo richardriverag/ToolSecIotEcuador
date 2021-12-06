@@ -14,7 +14,7 @@
               <h6># Direcciones IPv4 dentro de territorio Ecuatoriano</p>
                 <li class="lista">2,780,345 </li>
                 <a href="https://lite.ip2location.com/ecuador-ip-address-ranges?lang=es" class="btn btn-primary" target="_blank">Direcciones IPv4</a>
-              <h6># Direcciones IPv4 encontradas: </p>
+              <h6># Direcciones IPv4 Analisadas: </p>
                 {% for data in datos %}
                 <li class="lista">{{ data.AllIPv4 }}</li>
                 {%endfor%}
@@ -111,9 +111,6 @@ var myChart = new Chart(ctx, {
 });
 </script>
  {% endif %}
-
-
-
 <div class="container-fluid" id="main-container">
   <div class="row">
     <div class="col-md-12">

@@ -25,8 +25,8 @@ from MongoCliente import get_db
 
 from funcionamiento import herramienta
 
-import multiprocessing
-cpu = multiprocessing.cpu_count() # or os.cpu_count()
+#import multiprocessing
+#cpu = multiprocessing.cpu_count() # or os.cpu_count()
 
 import threading
 from queue import Queue
@@ -282,6 +282,11 @@ target = ''
 
 # Recibe un host y los puertos que queremos comprobar y devuelve los puertos abiertos
 
+#Lista de puertos a escanear.
+PortList = [22, 23, 25, 53, 80, 81, 110, 180, 443, 873, 2323, 5000, 5001, 5094, 5150, 5160, 7547, 8080, 8100, 8443, 8883, 49152, 52869, 56000,
+                        1728, 3001, 8008, 8009, 10001, 223, 1080, 1935, 2332, 8888, 9100, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 21, 554, 888, 1159, 1160, 1161,
+                        1435, 1518, 3389, 4550, 5005, 5400, 5550, 6550, 7000, 8000, 8081, 8090, 8150, 8866, 9000, 9650, 9999, 10000, 18004, 25001, 30001, 34567, 37777,
+                        69, 135, 161, 162, 4786, 5431, 8291, 37215, 53413]
 
 def OpenPort(port):
     try:
@@ -326,7 +331,8 @@ def threader():
 
 
 # number of threads are we going to allow for
-for x in range(cpu):
+num = len(PortList)
+for x in range(num):
     t = threading.Thread(target=threader)
   
     # classifying as a daemon, so they it will
@@ -399,7 +405,7 @@ def addNewDevices(ip, portOpen, exist):
 
         for puerto in portOpen:
             try:
-                setdefaulttimeout(0.5)  # Tiempo de conexión segundos
+                #setdefaulttimeout(0.5)  # Tiempo de conexión segundos
                 connection = socket(AF_INET, SOCK_STREAM)
                 connection.connect((ip, puerto))
                 connection.send(b'HEAD / HTTP/1.0\r\n\r\n')
@@ -442,7 +448,7 @@ def addNewDevices(ip, portOpen, exist):
 
         # Información de los puertos:
         dominio = getfqdn(ip)  # Dominio
-        whois = IPWhois(ip).lookup_whois()  # Whois
+        whois = IPWhois(ip).lookup_rdap()  # Whois
         dns = reversename.from_address(ip)  # DNS
         # Fecha y hora del Equipo.
         date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -509,8 +515,8 @@ def repeat(repeticiones):
     try:
         # repeticiones=1 ## si usuario no ingresa ningun valor, por defecto es 1 direción ip
         # Realizara una busqueda de 100 direciones ipv4.
-        if int(repeticiones) > 1000:
-            repeticiones = 1000
+        if int(repeticiones) > 10000:
+            repeticiones = 10000
 
         ic.enable()
         ic("Se van a examinar:", repeticiones)
@@ -560,12 +566,7 @@ def EmptyPort(IPv4, exist):
 
 def addIPv4(repeticiones):
     try:
-        PortList = [22, 23, 25, 53, 80, 81, 110, 180, 443, 873, 2323, 5000, 5001, 5094, 5150, 5160, 7547, 8080, 8100, 8443, 8883, 49152, 52869, 56000,
-                        1728, 3001, 8008, 8009, 10001, 223, 1080, 1935, 2332, 8888, 9100, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 21, 554, 888, 1159, 1160, 1161,
-                        1435, 1518, 3389, 4550, 5005, 5400, 5550, 6550, 7000, 8000, 8081, 8090, 8150, 8866, 9000, 9650, 9999, 10000, 18004, 25001, 30001, 34567, 37777,
-                        69, 135, 161, 162, 4786, 5431, 8291, 37215, 53413]
-
-
+        
         # agregarle en una funcion
         #print("repeticiones", repeticiones)
         for contador in range(0, int(repeticiones)):
