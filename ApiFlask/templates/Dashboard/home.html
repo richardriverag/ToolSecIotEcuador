@@ -72,16 +72,18 @@
 
 
 {% if cities %}
-<canvas id="myChart" width="400" height="150" style="background-color: white;"></canvas>
+
+<canvas id="myChart" width="400" height="250" style="background-color: #0a0a0a; color: white;"></canvas>
 <script>
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: [{% for city in cities %} {{ city.Puerto}}, {% endfor %}],
+        labels: [{% for port in ports %} {{ port[0]}}, {% endfor %}],
+
         datasets: [{
             label: '# Puertos',
-            data: [{% for city in cities %} {{city.Cantidad}}, {% endfor %}],
+            data: [{% for port in ports %} {{port[1]}}, {% endfor %}],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -110,7 +112,14 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
+
+
+
+
  {% endif %}
+
+
+
 <div class="container-fluid" id="main-container">
   <div class="row">
     <div class="col-md-12">

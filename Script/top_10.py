@@ -11,14 +11,17 @@ PortList = [22, 23, 25, 53, 80, 81, 110, 180, 443, 873, 2323, 5000, 5001, 5094, 
 
 data = []
 
+
 def ranking():
     for port in PortList:
         countPort = db.Devices.find({'puerto.Puerto': str(port)})
         quantity = countPort.count()
-        port_information = {'port': str(port), 'sum': str(quantity)}
-        print(port_information)
+        port_information = (port, quantity)
         data.append(port_information)
 
-    print(data)
-
 print(ranking())
+serverce = sorted(data, reverse=True, key=lambda x: x[1])[:10]
+for a,b in serverce:
+    print('Puerto:', a)
+    print('Cantidad:', b)
+

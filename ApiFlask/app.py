@@ -8,7 +8,7 @@ from bson.objectid import ObjectId
 from pymongo import message
 import pymongo
 from MongoCliente import getDevice_db, getClient_db
-from filtros import  datainfo, datacity, validar_password, map
+from filtros import  datainfo, datacity, validar_password, map, dataPort
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from functools import wraps
 from flask_mail import Mail, Message 
@@ -43,8 +43,11 @@ Userdb = getClient_db()
 #Data info
 varIpv4 = datainfo
 
-#Data info
+#Data city
 varGeoCity = datacity
+
+#Data Port
+varPort = dataPort
 
 #Validar Pass
 validar_pass = validar_password
@@ -349,10 +352,12 @@ def filter_info():
 
             cityPort = varGeoCity(capitalize)
 
+            puertos = sorted(varPort(), reverse=True, key=lambda x: x[1])[:10]
+
             # Contenedor de información 
             data = varIpv4(cantidad, filter)
 
-            return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data)
+            return render_template('dashboard/home.html', filters=todo_filter, cities = cityPort, datos=data, ports = puertos)
 
         else:
             message = "Ups! algo salio mal"
