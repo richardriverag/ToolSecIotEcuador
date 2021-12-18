@@ -99,10 +99,14 @@ Jefferson Ricardo Llumiquinga Llumiquinga.
 
 -------------------------------------
 
-### _☣ Version_
-- v0.1
+### _☣ Version_ V02.2021
 
 -------------------------------------
+
+<h2 align="center">DASHBOARD IOT ECUDOADOR</h2>
+
+- [DASHBOARD](https://www.python.org/downloads/) Ingresa aquí.
+
 
 ### :warning: Advertencia!
 
