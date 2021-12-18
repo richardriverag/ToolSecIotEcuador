@@ -107,7 +107,7 @@ Jefferson Ricardo Llumiquinga Llumiquinga.
 
 - [DASHBOARD](https://www.python.org/downloads/) Ingresa aquí.
 
-<p align="center"><img src="ApiFlask/static/img/dashboard_IoT"></p>
+<p align="center"><img src="ApiFlask/static/img/dashboard_IoT.png"></p>
 
 ### :warning: Advertencia!
 
