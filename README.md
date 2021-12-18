@@ -105,7 +105,7 @@ Jefferson Ricardo Llumiquinga Llumiquinga.
 
 <h2 align="center">DASHBOARD IOT ECUDOADOR</h2>
 
-- Ingresa aquí[DASHBOARD](https://www.python.org/downloads/).
+- Ingresa aquí [DASHBOARD](https://charts.mongodb.com/charts-project-0-hqxtp/public/dashboards/a99a7750-946b-401f-973e-9696229ead47).
 
 <p align="center"><img src="ApiFlask/static/img/dashboard_IoT.png"></p>
 
