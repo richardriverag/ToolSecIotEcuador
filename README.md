@@ -111,6 +111,12 @@ Jefferson Ricardo Llumiquinga Llumiquinga.
 
 ### :warning: Advertencia!
 
-***No somos responsables del mal uso del sistema***
+<p aling="center">
+No se tolerará el uso de bots, scripts u otros métodos para extraer datos del sitio, descargar muestras a un ritmo excesivo o que afecte de otro modo el rendimiento del sitio, los sistemas backend o la experiencia del usuario.
+
+Este sitio no es responsable de ningún daño, incumplimiento u otro incidente.
+
+El acceso se concede bajo su responsabilidad.
+</p>
 
 Copyright (c) 2021-present, Edison Jumbo.
