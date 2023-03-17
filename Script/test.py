@@ -18,6 +18,8 @@ from datetime import datetime, timedelta
 # Comprobar sockets abiertos.
 from socket import socket, AF_INET, SOCK_STREAM, setdefaulttimeout, getfqdn
 from selenium import webdriver  # Abrir FireFox para capturas de pantallas.
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from ipwhois import IPWhois  # Whois.
 import pygeoip  # Para la geolcalización de las direcciones ip.
 from ipaddress import IPv4Address  # Manejos de IPv4.
@@ -165,8 +167,8 @@ def main():
         Title = pyfiglet.figlet_format(
             "IOT ECUADOR \n", font="epic", justify="center")
         Users = ":.HERRAMIENTA DE ANÁLISIS DE VULNERABILIDADES EN DISPOSITIVOS IOT EN ECUADOR.:\n\n"
-        inicio = 'Bienvenido!  >>>' + hostname + '<<<'
-
+        #inicio = 'Bienvenido!  >>>' + hostname + '<<<'
+        inicio = 'Bienvenido!  >>>' + "Admin" + '<<<'
         print(bcolors.OKGREEN + Title + bcolors.ENDC)
         print(typewrite(Users))
         print(typewrite(inicio))
@@ -206,9 +208,9 @@ def typewrite(text):
             sys.stdout.flush()
 
             if char != "\n":
-                sleep(0.04)
+                sleep(0.0001)
             else:
-                sleep(0.7)
+                sleep(0.01)
         return char
 
     except Exception:
@@ -217,7 +219,7 @@ def typewrite(text):
 
 
 def opc1():
-    pr = " \nOk!. Cúantas direcciones Ipv4 Aleatorias deseas Analizar: \n"
+    pr = " \nOk!. ¿Cúantas direcciones Ipv4 Aleatorias deseas Analizar: \n"
     print(typewrite(pr))
     cant = number()
     maxCant = repeat(cant)
@@ -228,10 +230,10 @@ def body():
     try:
 
         while True:
-            pr = "\nCuéntame, que deseas hacer el día de hoy? \n"
+            pr = "\n¿Cuéntame, qué deseas hacer el día de hoy? \n"
             print(typewrite(pr))
 
-            op1 = " 1)\tAnalizar direcciones Ipv4 en Ecuador "
+            op1 = " 1)\tAnalizar direcciones IPv4 en Ecuador "
             print(typewrite(op1))
             sleep(1)
             op2 = " 2)\tConocer como funciona la herramienta? "
@@ -240,7 +242,7 @@ def body():
             op3 = " 3)\tSalir\n"
             print(typewrite(op3))
 
-            num = input('Introduce el Opción: ')
+            num = input('Introduce la Opción: ')
 
             if num == str(1):
                 opc1()
@@ -260,11 +262,11 @@ def body():
 
             if num == '':
                 print('No has ingresado una opción ')
-                print('Favor de volverlo a intentar.')
+                print('Intenta nuevamente.')
 
             else:
-                print('La opcion ingresada no es la corecta')
-                print('Favor de volverlo a intentar.')
+                print('La opción ingresada no es la corecta')
+                print('Intenta nuevamente.')
 
         return num
 
@@ -308,10 +310,15 @@ target = ''
 # Recibe un host y los puertos que queremos comprobar y devuelve los puertos abiertos
 
 #Lista de puertos a escanear.
-PortList = [22, 23, 25, 53, 80, 81, 110, 180, 443, 873, 2323, 5000, 5001, 5094, 5150, 5160, 7547, 8080, 8100, 8443, 8883, 49152, 52869, 56000,
-                        1728, 3001, 8008, 8009, 10001, 223, 1080, 1935, 2332, 8888, 9100, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 21, 554, 888, 1159, 1160, 1161,
-                        1435, 1518, 3389, 4550, 5005, 5400, 5550, 6550, 7000, 8000, 8081, 8090, 8150, 8866, 9000, 9650, 9999, 10000, 18004, 25001, 30001, 34567, 37777,
-                        69, 135, 161, 162, 4786, 5431, 8291, 37215, 53413]
+PortList = {22, 23, 25, 53, 80, 81, 110, 180, 443, 873, 2323, 5000, 5001, 5094, 
+            5150, 5160, 7547, 8080, 8100, 8443, 8883, 49152, 52869, 56000, 1728,
+            3001, 8008, 8009, 10001, 223, 1080, 1935, 2332, 8888, 9100, 2000, 
+            2001, 2002, 2003, 2004, 2005, 2006, 2007, 21, 554, 888, 1159, 1160, 
+            1161, 1435, 1518, 3389, 4550, 5005, 5400, 5550, 6550, 7000, 8000, 
+            8081, 8090, 8150, 8866, 9000, 9650, 9999, 10000, 18004, 25001, 
+            30001, 34567, 37777, 69, 135, 161, 162, 4786, 5431, 8291, 37215, 
+            53413, 1882, 8882, 1883, 8883, 1884, 8884, 1885, 8885, 1886, 8886, 
+            1887, 8887, 1888, 8888 }
 
 def OpenPort(port):
     try:
@@ -389,8 +396,7 @@ def screenshot(ip, puerto):
         optionsChr.add_argument('--ignore-certificate-errors')
         optionsChr.add_argument('--version')
 
-        browser = webdriver.Chrome(
-            executable_path=r'C:\\Users\\Richard\\GitHub\\ToolSecIotEcuador\\Script\\FirefoxDriver\\chromedriver.exe', options=optionsChr)
+        browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=optionsChr)
         browser.implicitly_wait(15)
         browser.set_page_load_timeout(15)
         browser.get("http://{0}".format(ip)+":"+str(puerto))
@@ -400,7 +406,7 @@ def screenshot(ip, puerto):
         ic(nombreimagen)
         screenshot = browser.get_screenshot_as_file(
 
-            r"C:\\Users\\Richard\\GitHub\\ToolSecIotEcuador\\ApiFlask\\static\\capturas\\" + str(nombreimagen))  # Bool
+            r""+os.path.abspath('.')+"\\..\\ApiFlask\\static\\capturas\\" + str(nombreimagen))  # Bool
         ic.disable()
         ic(screenshot)
 
@@ -499,7 +505,7 @@ def addNewDevices(ip, portOpen, exist):
             db.Devices.insert_one(datos.toCollection())
             logging.info("Ipv4: %s, Agregada!", ip)
 
-            return "Se agrego correctamente!\n"
+            return "Se agrego correctamente!"
 
         # Paso el límite los días esblecidos
         if exist == 1:
@@ -539,8 +545,8 @@ def repeat(repeticiones):
     try:
         # repeticiones=1 ## si usuario no ingresa ningun valor, por defecto es 1 direción ip
         # Realizara una busqueda de 100 direciones ipv4.
-        if int(repeticiones) > 10000:
-            repeticiones = 10000
+        if int(repeticiones) > 100000:
+            repeticiones = 100000
 
         ic.enable()
         ic("Se van a examinar:", repeticiones)
