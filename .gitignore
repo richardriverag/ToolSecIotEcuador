@@ -2,3 +2,4 @@
 *.log
 MongoCliente.py
 Data/
+ApiFlask/static/capturas/
