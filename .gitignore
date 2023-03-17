@@ -3,3 +3,4 @@
 MongoCliente.py
 Data/
 ApiFlask/static/capturas/
+Script/logs/*
