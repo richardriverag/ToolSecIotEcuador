@@ -1,7 +1,22 @@
 from pymongo import MongoClient  # Conexión a la base de datos.
 import re
-from MongoCliente import getDevice_db
+#from MongoCliente import getDevice_db
 #Device client
+#db = getDevice_db()
+
+#funciones que faltan
+def getDevice_db():
+    client = 'client'
+    passdb = 'kJwNCrAnmv4eXpwU'
+    dbname = 'iotecuador'
+
+    client = MongoClient("mongodb://localhost:27017/iotecuador")
+    # get the database name
+    db = client.get_database(dbname)
+    # get the particular collection that contains the data
+    Devicesdb = db.Devices
+    return Devicesdb
+
 db = getDevice_db()
 
 #filtro de número de direcciones

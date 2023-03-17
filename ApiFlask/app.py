@@ -7,14 +7,36 @@ from datetime import date, datetime
 from bson.objectid import ObjectId
 from pymongo import message
 import pymongo
-from MongoCliente import getDevice_db, getClient_db
+# from MongoCliente import getDevice_db, getClient_db
 from filtros import  datainfo, datacity, validar_password, map, dataPort
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from functools import wraps
 from flask_mail import Mail, Message 
 from pymongo import MongoClient
 
+# ########
+# funciones que faltan
+def getDevice_db():
+    dbname = 'iotecuador'
+    client = MongoClient("mongodb://localhost:27017/iotecuador")
+    # get the database name
+    db = client.get_database(dbname)
+    # get the particular collection that contains the data
+    Devicesdb = db.Devices
+    return Devicesdb
 
+def getClient_db():
+
+    client = 'client'
+    passdb = 'kJwNCrAnmv4eXpwU'
+    dbname = 'iotecuador'
+    client = MongoClient("mongodb://localhost:27017/iotecuador")
+    # get the database name
+    db = client.get_database(dbname)
+    # get the particular collection that contains the data
+    Userdb = db.User
+    return Userdb
+# ########
 
 app = Flask(__name__)
 #app.secret_key

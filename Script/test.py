@@ -1,5 +1,7 @@
 import logging
 import os
+from pymongo import MongoClient # Conexión a la base de datos.
+from pymongo.errors import ServerSelectionTimeoutError
 from selenium.webdriver.chrome import options
 from bcolor import bcolors  # Clase contenedora de los colores.
 from atributos import Device  # Clase atributos.
@@ -21,7 +23,7 @@ import pygeoip  # Para la geolcalización de las direcciones ip.
 from ipaddress import IPv4Address  # Manejos de IPv4.
 from random import randint  # Para la generación de ipv4 al azar.
 hostname = os.getenv('computername') # Obtener el nombre de la maquina local.
-from MongoCliente import get_db
+#from MongoCliente import get_db
 
 from funcionamiento import herramienta
 
@@ -41,6 +43,29 @@ portOpen = []
 # Generar información de diagnostico para scripts con el módulo logging.
 logging.basicConfig(filename='logs/iotInfo.log', level='INFO',
                     format='%(asctime)s: %(levelname)s: %(message)s')
+
+client = 'client'
+passdb = 'kJwNCrAnmv4eXpwU'
+dbname = 'iotecuador'
+
+# mongodb://localhost:27017
+def get_db():
+    try:
+        #url_client = MongoClient("mongodb://"+client+":"+passdb +
+        #                         "@iotecuador.qbeh8.mongodb.net/"+dbname+"?retryWrites=true&w=majority")
+        url_client = MongoClient("mongodb://localhost:27017/iotecuador")
+        mydb = url_client.iotecuador
+
+    except Exception:
+        logging.error(
+            'No se puede conectar con la DataBase: %s. Verifique el cliente de conexion: get_db()', dbname)
+        exit(1)
+
+    except ServerSelectionTimeoutError as e:
+        logging.error(
+            'No se puede conectar con la DataBase: %s. Verifique su conexion', dbname)
+        exit(1)
+    return mydb
 
 db = get_db()  # Conexiíon a la BD
 
@@ -365,8 +390,7 @@ def screenshot(ip, puerto):
         optionsChr.add_argument('--version')
 
         browser = webdriver.Chrome(
-            executable_path=r'C:\\xampp\\htdocs\\Flask_IotEcuador\\Script\\FirefoxDriver\\chromedriver.exe', options=optionsChr)
-        
+            executable_path=r'C:\\Users\\Richard\\GitHub\\ToolSecIotEcuador\\Script\\FirefoxDriver\\chromedriver.exe', options=optionsChr)
         browser.implicitly_wait(15)
         browser.set_page_load_timeout(15)
         browser.get("http://{0}".format(ip)+":"+str(puerto))
@@ -376,7 +400,7 @@ def screenshot(ip, puerto):
         ic(nombreimagen)
         screenshot = browser.get_screenshot_as_file(
 
-            r"C:\\xampp\\htdocs\\Flask_IotEcuador\\ApiFlask\\static\\capturas\\" + str(nombreimagen))  # Bool
+            r"C:\\Users\\Richard\\GitHub\\ToolSecIotEcuador\\ApiFlask\\static\\capturas\\" + str(nombreimagen))  # Bool
         ic.disable()
         ic(screenshot)
 
