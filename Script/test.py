@@ -1,11 +1,14 @@
 import logging
 import os
+import sys
 from pymongo import MongoClient # Conexión a la base de datos.
 from pymongo.errors import ServerSelectionTimeoutError
 from selenium.webdriver.chrome import options
+from selenium import webdriver  # Abrir FireFox para capturas de pantallas.
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from bcolor import bcolors  # Clase contenedora de los colores.
 from atributos import Device  # Clase atributos.
-import sys
 # pip install alive_progress & pip install tqdm
 from alive_progress import alive_bar
 from time import sleep
@@ -17,18 +20,17 @@ from dns import reversename  # Para obtener el DNS.
 from datetime import datetime, timedelta
 # Comprobar sockets abiertos.
 from socket import socket, AF_INET, SOCK_STREAM, setdefaulttimeout, getfqdn
-from selenium import webdriver  # Abrir FireFox para capturas de pantallas.
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 from ipwhois import IPWhois  # Whois.
 import pygeoip  # Para la geolcalización de las direcciones ip.
 from ipaddress import IPv4Address  # Manejos de IPv4.
 from random import randint  # Para la generación de ipv4 al azar.
 hostname = os.getenv('computername') # Obtener el nombre de la maquina local.
-#from MongoCliente import get_db
+from MongoCliente import *
 
 from funcionamiento import herramienta
-
+#Desactivar logs del driver_manager
+os.environ['WDM_LOG'] = str(logging.NOTSET)
+os.environ['WDM_PROGRESS_BAR'] = str(0)
 #import multiprocessing
 #cpu = multiprocessing.cpu_count() # or os.cpu_count()
 
@@ -45,29 +47,6 @@ portOpen = []
 # Generar información de diagnostico para scripts con el módulo logging.
 logging.basicConfig(filename='logs/iotInfo.log', level='INFO',
                     format='%(asctime)s: %(levelname)s: %(message)s')
-
-client = 'client'
-passdb = 'kJwNCrAnmv4eXpwU'
-dbname = 'iotecuador'
-
-# mongodb://localhost:27017
-def get_db():
-    try:
-        #url_client = MongoClient("mongodb://"+client+":"+passdb +
-        #                         "@iotecuador.qbeh8.mongodb.net/"+dbname+"?retryWrites=true&w=majority")
-        url_client = MongoClient("mongodb://localhost:27017/iotecuador")
-        mydb = url_client.iotecuador
-
-    except Exception:
-        logging.error(
-            'No se puede conectar con la DataBase: %s. Verifique el cliente de conexion: get_db()', dbname)
-        exit(1)
-
-    except ServerSelectionTimeoutError as e:
-        logging.error(
-            'No se puede conectar con la DataBase: %s. Verifique su conexion', dbname)
-        exit(1)
-    return mydb
 
 db = get_db()  # Conexiíon a la BD
 
@@ -309,7 +288,7 @@ target = ''
 
 # Recibe un host y los puertos que queremos comprobar y devuelve los puertos abiertos
 
-#Lista de puertos a escanear.
+#Lista de puertos a escanear. //quitar los puertos de Lora y mqtt
 PortList = {22, 23, 25, 53, 80, 81, 110, 180, 443, 873, 2323, 5000, 5001, 5094, 
             5150, 5160, 7547, 8080, 8100, 8443, 8883, 49152, 52869, 56000, 1728,
             3001, 8008, 8009, 10001, 223, 1080, 1935, 2332, 8888, 9100, 2000, 
@@ -381,6 +360,7 @@ start = time.time()
 # En caso que la ruta del directorio contenedor de sea incorrecta, se envia un mensaje con el recpectivo error!.
 # El nombre que toma la img es la dirección Ipv4.
 
+# TODO luego del screenshoot guardar el código fuente de la página.
 def screenshot(ip, puerto):
     setdefaulttimeout(30)
     try:
