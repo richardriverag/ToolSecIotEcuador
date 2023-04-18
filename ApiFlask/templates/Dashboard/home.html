@@ -73,7 +73,7 @@
 
 {% if cities %}
 
-<canvas id="myChart" width="400" height="250" style="background-color: #0a0a0a; color: white;"></canvas>
+<canvas id="myChart" width="400" height="250" style="background-color: #ffffff; color: white;"></canvas>
 <script>
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
@@ -109,7 +109,8 @@ var myChart = new Chart(ctx, {
                 beginAtZero: true
             }
         }
-    }
+    },
+    plugins: [ChartDataLabels],
 });
 </script>
 
