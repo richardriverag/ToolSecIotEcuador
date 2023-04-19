@@ -112,6 +112,7 @@ def map():
 
     for capital in capitalList:
         capital_filter = db.find({'Localizacion.city': capital, 'Estado': True})
+        print(capital_filter)
         quantity = capital_filter.count()
         addInfo = quantity
         data.append(addInfo)
